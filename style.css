@@ -1,0 +1,180 @@
+html {
+    /*    1em = 16px*/
+    font-size: 1em;
+}
+
+body {
+    background-color: #fff8ee;
+    font-family: 'Special Elite', cursive;
+    line-height: 1.5;
+    color: rgb(0, 0, 0);
+    overflow: hidden;
+}
+
+div.container {
+    font-family: 'Special Elite', cursive;
+    text-align: center;
+    margin-top: 7em;
+    padding-top: 10em;
+    padding-bottom: 10em;
+    padding-left: 45em;
+}
+
+div.descriptions {
+    margin: 0, 1em, 0, 0;
+}
+
+img.header {
+    margin: 0;
+}
+
+img {
+    margin: 1em;
+    float: left;
+}
+
+.home img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+
+div.home {
+    margin: 1.3em 7em .8em 7em;
+}
+
+
+p {
+    font-family: 'Special Elite', cursive;
+    text-align: center;
+    margin: 1.3em 7em .8em 7em;
+}
+
+/*this is a group selection, selecting all the headlines h1-h4*/
+h1 {
+    font-family: 'Special Elite', cursive;
+    font-size: 5em;
+    text-align: right;
+    color:#ffffff;
+    width: 0; 
+}
+
+h2 {
+    font-family: 'Special Elite', cursive;
+    font-size: 2em;
+    color:#ffffff;
+    border: 3px solid white;  
+    width: 7em;
+    height: 1.4em;
+    margin-left: 3em;
+    margin-right: 3em;
+    border-radius: 10px;  
+}
+
+h3.name {
+    padding: 0 0 0 0;
+    font-family: 'Special Elite', cursive;
+    color: rgb(0, 0, 0);
+}
+
+h3 {
+    font-size: 1em;
+    font-family: 'Oswald', sans-serif;
+    color:white;
+}
+
+h4 {
+    /*  top:1.414em right:0  bottom:0.5em left:0*/
+    margin: 1.414em 0 0.5em 0;
+    font-size: 1em;
+    font-family: 'Special Elite', cursive;
+    color: #937504;
+
+}
+
+nav .sociall {
+    color: white;
+}
+
+.nav {
+    padding: 0 10em 1em 10em;
+}
+
+small,
+.font_small {
+    font-size: 0.75em;
+}
+
+.active {
+    color: white;
+}
+
+/*styling the social media icons*/
+.icons {
+    padding: 3em;
+    /*
+    padding-top: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 5em;
+*/
+
+}
+
+.social {
+    font-size: 2em;
+    color: darkgoldenrod;
+}
+
+.social:hover {
+    color: darkgrey;
+}
+
+
+/* link*/
+
+/* a {
+    color: #0287b4;
+} */
+
+a:hover {
+    color: #ffffff; 
+    background-color: #d94a4c;
+}
+
+/*button style*/
+/*solid button style*/
+.btn {
+    font-size: 1rem;
+    letter-spacing: .1em;
+    line-height: 2em;
+    border-radius: 3em;
+    /*    top:1.8 right:3.6 bottom 1.8 left3.6*/
+    /*    the size of button*/
+    padding: .5em 1em;
+    color: black;
+    background: rgba(0, 0, 255, 0.5);
+    border: none;
+}
+
+.btn:hover {
+    color: white;
+    background-color: black;
+    opacity: 0.8;
+}
+
+/*outline button style*/
+.btn-primary-outline {
+    color: indigo;
+    background-color: transparent;
+    border: 1px indigo solid;
+    transition: all 0.5s;
+}
+
+.btn-primary-outline:hover {
+    color: white;
+    background-color: indigo;
+    border-color: indigo;
+}
+
