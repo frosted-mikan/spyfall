@@ -72,6 +72,11 @@ h2 {
     border-radius: 10px;  
 }
 
+h2:hover {
+    border-color: #d94a4c;
+    text-decoration: none;
+}
+
 h3.name {
     padding: 0 0 0 0;
     font-family: 'Special Elite', cursive;
@@ -84,14 +89,6 @@ h3 {
     color:white;
 }
 
-h4 {
-    /*  top:1.414em right:0  bottom:0.5em left:0*/
-    margin: 1.414em 0 0.5em 0;
-    font-size: 1em;
-    font-family: 'Special Elite', cursive;
-    color: #937504;
-
-}
 
 nav .sociall {
     color: white;
@@ -110,16 +107,8 @@ small,
     color: white;
 }
 
-/*styling the social media icons*/
 .icons {
     padding: 3em;
-    /*
-    padding-top: 1em;
-    padding-left: 2em;
-    padding-right: 2em;
-    padding-bottom: 5em;
-*/
-
 }
 
 .social {
@@ -131,16 +120,15 @@ small,
     color: darkgrey;
 }
 
-
 /* link*/
+a {
+    color: white;
+}
 
-/* a {
-    color: #0287b4;
-} */
-
-a:hover {
-    color: #ffffff; 
-    background-color: #d94a4c;
+.buttons:hover {
+    color: #d94a4c;
+    border-color: #d94a4c;
+    text-decoration: none;
 }
 
 /*button style*/
