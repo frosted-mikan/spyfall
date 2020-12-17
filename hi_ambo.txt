@@ -1,3 +1,6 @@
+Things ambo sent in WhatsApp:
+
+
 Components I think we should/could include: 
 -preset and custom locations 
 -toggle locations on/off (whether or not they are included) 
@@ -11,3 +14,4 @@ Components I think we should/could include:
 -possibly have a built in message chat (like Avalon)? 
 -during game, click to reveal your own role, like in Avalon: if you're the spy, it says "You are Spy" and if you're not, it says "You are in x location" 
 -rules and/or credits page(s)
+
