@@ -51,6 +51,69 @@ div.home {
     margin: 1.3em 7em .8em 7em;
 }
 
+@font-face{
+    font-family:'digital-clock-font';
+    src: url('public/timefont.ttf');
+}
+
+.settime {
+    font-family:'digital-clock-font';
+    width: 5em;
+    border: none;
+    font-size: 1.5em;
+    background-color: white;
+}
+
+.settime:hover {
+    border:none;
+}
+
+.identity {
+    border:none;
+    margin-bottom:1em;
+    padding:0;
+}
+
+.identityimg {
+    margin:0;
+    background-color:#f0ebe7;
+}
+
+div.col-sm-8 {
+    position:relative;
+}
+
+.displaytime {
+    font-family:'digital-clock-font';
+    font-size: 200;
+    position: absolute;
+    top: -60;
+    color: #d94a4c;
+}
+
+div.menu {
+    position: absolute;
+    top: 150;
+    margin-left: 1em;
+    margin-right: 1em;
+    width: 380;
+    margin-top: 1em;
+}
+
+.menubuttons {
+    font-family:'digital-clock-font';
+    font-size:2em;
+    /* margin-left: 1em;
+    margin-right: 1em; */
+    padding:0;
+}
+
+.singleline {
+    width: 600;
+    margin-top: 1em;
+    top: -10;
+    position: relative;
+}
 
 p {
     font-size: 0.7em;
