@@ -44,38 +44,40 @@
         <div class="view">
             <img class = "folder" src = "public/folder_small.png" alt = folder></img>
             <div class="container">
-                <!-- Generate random room code -->
-                
-                <!-- <h1><script type="text/javascript">document.write(makeid(5));</script></h1> -->
-                <h1>
-                    <script type = "text/javascript">
-                        // Storing HTML code block in a variable
-                        var roomcode = makeid(5);
-                        // Inserting the code block to wrapper element
-                        document.write(roomcode)
-                    </script> 
-                </h1>
-
-
-                <!-- Various attempts to click to copy to clipboard: -->
-                <!-- The text field -->
-                <!-- <h1><input type="text" value="makeid(5)" id="myInput"></h1> -->
-                <!-- The button used to copy the text -->
-                 <button id="copy" onclick="copyclip(roomcode)">Copy</button>
-
-                
-                <!-- Set Timer -->
                 <div class="row">
-                    <div class="col-sm-2"><h2>timer:</h2></div>
-                    <div class="col-sm-10 text-left"><input class="settime" id="userInput" type="number" value = "0"/></div>
-                </div>
+                    <!-- Generate random room code -->
+                    <div class="col-sm-4 text-left placeholder">
+                    <h1>
+                        <script type = "text/javascript">
+                            // Storing HTML code block in a variable
+                            var roomcode = makeid(5);
+                            // Inserting the code block to wrapper element
+                            document.write(roomcode)
+                        </script> 
+                    </h1>
+                    <!-- The button used to copy the text -->
+                    <button class="copybutton" onclick="copyclip(roomcode)">
+                        <img id="copy" class="copyimg1" src="public/copyicon.png" alt="copyicon" width="20" height="20"/>
+                        <img class="copyimg" src="public/copyicon_fill.png" alt="copyiconfill" width="20" height="20"/>
+                    </button>
+                    </div>
 
+                    <!-- Set Timer -->
+                    <div class="col-sm-8 text-left">
+                        <span class="displaytime" id="timerr"> 05:00 </span>
+                        <!-- <div class="col-sm-10 text-left"><input class="settime" id="userInput" type="number" value = "0"/></div> -->
+                        <div class="row text-center menu">
+                            <div class="col-sm-6"><h3 class="menubuttons"><a href="ingame.html" onclick="getTime()">start</a></h3></div>
+                            <div class="col-sm-6"><h3 class="menubuttons"><a href="index.html">back</a></h3></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Division Line -->
+                <img src="public/singleline.png" class="singleline" alt="singleline">
                 <div class="row">
                     <div class="col-sm-6"><h2>locations</h2></div>
                     <div class="col-sm-6"><h2>suspects</h2></div>
                 </div>
-                <h3><a href = "ingame.html" onclick="getTime()">start game</a></h3>
-                <h3><a href = "index.html">back</a></h3>
             </div>
         </div>
 

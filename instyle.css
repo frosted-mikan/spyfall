@@ -51,6 +51,11 @@ div.home {
     margin: 1.3em 7em .8em 7em;
 }
 
+div.placeholder {
+    width:200;
+    height:200;
+}
+
 @font-face{
     font-family:'digital-clock-font';
     src: url('public/timefont.ttf');
@@ -76,7 +81,7 @@ div.home {
 
 .identityimg {
     margin:0;
-    background-color:#f0ebe7;
+    background-color:none;
 }
 
 div.col-sm-8 {
@@ -132,6 +137,33 @@ h1 {
 
 .rules {
     margin-right: 13.5em;
+}
+
+.copybutton {
+    text-align:center;
+    background:none;
+    border:none;
+    color: #d94a4c;
+    margin-left: 3.5em;
+    margin-right: 3.5em;
+    position: relative;
+    top: -1.5em;
+}
+
+.copybutton:hover {
+    text-decoration:underline;
+    border:none;
+}
+
+.copybutton .copyimg {
+    display:none;
+}
+.copybutton:hover .copyimg {
+    display:inline;
+}
+
+.copybutton:hover .copyimg1 {
+    display:none;
 }
 
 h2 {
