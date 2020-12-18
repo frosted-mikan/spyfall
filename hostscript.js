@@ -9,21 +9,28 @@ function makeid(length) {
     return result;
  }
  
-//Copy to Clipboard
-function copyclip() {
-    /* Get the text field */
-    var copyText = document.getElementById("myInput");
-  
-    /* Select the text field */
-    copyText.select();
-    // copyText.setSelectionRange(0, 99999); /* For mobile devices */
-  
-    /* Copy the text inside the text field */
+ function copyclip(text) {
+    var dummy = document.createElement("textarea");
+    // to avoid breaking orgain page when copying more words
+    // cant copy when adding below this code
+    // dummy.style.display = 'none'
+    document.body.appendChild(dummy);
+    //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+    dummy.value = text;
+    dummy.select();
     document.execCommand("copy");
-  
-    /* Alert the copied text */
-    alert("Copied the text: " + copyText.value);
-  }
+    document.body.removeChild(dummy);
+    // alert("Copied the text: " + text);
+
+    var x = document.getElementById("copy");
+    if (x.innerHTML === "Copy") {
+      x.innerHTML = "Copied!";
+    } else {
+      x.innerHTML = "Copy";
+    }
+
+}
+
 
 //Set Timer
 // var myVar;

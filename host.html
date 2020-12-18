@@ -45,13 +45,24 @@
             <img class = "folder" src = "public/folder_small.png" alt = folder></img>
             <div class="container">
                 <!-- Generate random room code -->
-                <h1><script type="text/javascript">document.write(makeid(5));</script></h1>
+                
+                <!-- <h1><script type="text/javascript">document.write(makeid(5));</script></h1> -->
+                <h1>
+                    <script type = "text/javascript">
+                        // Storing HTML code block in a variable
+                        var roomcode = makeid(5);
+                        // Inserting the code block to wrapper element
+                        document.write(roomcode)
+                    </script> 
+                </h1>
+
 
                 <!-- Various attempts to click to copy to clipboard: -->
                 <!-- The text field -->
                 <!-- <h1><input type="text" value="makeid(5)" id="myInput"></h1> -->
                 <!-- The button used to copy the text -->
-                <!-- <button onclick="copyclip()">Copy</button> -->
+                 <button id="copy" onclick="copyclip(roomcode)">Copy</button>
+
                 
                 <!-- Set Timer -->
                 <div class="row">
