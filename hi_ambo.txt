@@ -15,3 +15,4 @@ Components I think we should/could include:
 -during game, click to reveal your own role, like in Avalon: if you're the spy, it says "You are Spy" and if you're not, it says "You are in x location" 
 -rules and/or credits page(s)
 
+-here is ambo's addition to this text file
