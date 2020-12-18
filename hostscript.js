@@ -21,13 +21,12 @@ function makeid(length) {
     document.execCommand("copy");
     document.body.removeChild(dummy);
     // alert("Copied the text: " + text);
-
+    
     var x = document.getElementById("copy");
-    if (x.src === "http://127.0.0.1:5500/public/copyicon.png") {
-        x.src = "http://127.0.0.1:5500/public/copyicon_fill.png";
-      } else {
+    x.src = "http://127.0.0.1:5500/public/checkicon.png";
+    setTimeout(function(){ 
         x.src = "http://127.0.0.1:5500/public/copyicon.png";
-      }
+    }, 3000);
 }
 
 

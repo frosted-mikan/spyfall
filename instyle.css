@@ -82,6 +82,7 @@ div.placeholder {
 .identityimg {
     margin:0;
     background-color:none;
+    cursor:pointer;
 }
 
 div.col-sm-8 {
@@ -147,6 +148,7 @@ h1 {
     margin-left: 3.5em;
     margin-right: 3.5em;
     position: relative;
+    cursor:pointer;
     top: -1.5em;
 }
 
@@ -164,6 +166,10 @@ h1 {
 
 .copybutton:hover .copyimg1 {
     display:none;
+}
+
+.copybutton:focus, .button:focus, [type="submit"]:focus {
+    outline: none;
 }
 
 h2 {
