@@ -8,7 +8,7 @@ body {
     font-family: 'Special Elite', cursive;
     line-height: 1.5;
     color: rgb(0, 0, 0);
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .folder {
@@ -73,16 +73,18 @@ div.placeholder {
     border:none;
 }
 
-.identity {
-    border:none;
-    margin-bottom:1em;
-    padding:0;
-}
-
 .identityimg {
     margin:0;
     background-color:none;
     cursor:pointer;
+}
+
+.identity:hover .identityimg {
+    filter: grayscale(100%);
+}
+
+.identity:focus, .button:focus, [type="submit"]:focus {
+    outline: none;
 }
 
 div.col-sm-8 {
@@ -127,7 +129,6 @@ p {
     text-align: left;
 }
 
-/*this is a group selection, selecting all the headlines h1-h4*/
 h1 {
     font-family: 'Special Elite', cursive;
     font-size: 4em;
@@ -140,16 +141,21 @@ h1 {
     margin-right: 13.5em;
 }
 
+.clickcopy {
+    position: relative;
+    margin-left: 1.5em;
+    bottom: 0.9em;
+}
+
 .copybutton {
     text-align:center;
     background:none;
     border:none;
     color: #d94a4c;
-    margin-left: 3.5em;
-    margin-right: 3.5em;
     position: relative;
-    cursor:pointer;
-    top: -1.5em;
+    cursor: pointer;
+    top: -2em;
+    right: 3em;
 }
 
 .copybutton:hover {
@@ -172,6 +178,57 @@ h1 {
     outline: none;
 }
 
+.spybut {
+    padding:0;
+    margin:0;
+    margin-top:1em;
+}
+
+.spyimg {
+    padding:0;
+    margin:0;
+}
+
+div.col-sm-1 {
+    padding-left:0;
+}
+ 
+div.col-sm-5 {
+    padding-left:0;
+}
+
+div.spyrow {
+    margin-left:0.5em;
+    position: relative;
+    top: -2.5em;
+}
+
+.smallline {
+    width: 12em;
+    height: 1.1em;
+    position: relative;
+    top: -3em;
+}
+
+.box {
+    border:none;
+}
+
+.box:focus, [type="submit"]:focus {
+    outline:none;
+}
+
+button {
+    border:none;
+    background:none;
+    cursor:pointer;
+    padding:0;
+}
+
+button:focus, [type="submit"]:focus {
+    outline: none;
+}
+
 h2 {
     font-family: 'Special Elite', cursive;
     font-size: 1.5em;
@@ -188,6 +245,15 @@ h3 {
     color: #d94a4c;
 }
 
+h4 {
+    font-size:1em;
+    font-family: 'Special Elite', cursive;
+    color:black;
+    text-align:left;
+    border:none;
+    background:none;
+}
+
 a:hover {
     color:#d94a4c;
     text-decoration: underline;
@@ -197,3 +263,45 @@ a {
     font-size: 1em;
     color: #d94a4c;
 }
+
+.box {
+    border:none;
+}
+
+.done {
+    text-decoration: line-through;
+    color:#d94a4c;
+}
+
+ul {
+    padding-left:2em;
+}
+
+li {
+    font-family: 'Special Elite', cursive;
+    color:black;
+    font-size:1em;
+    text-align:left;
+}
+
+.selectopt {
+    border: none;
+    padding-top: 0.2em;
+    padding-bottom: 0.3em;
+    width: 10em;
+}
+
+.clearbutton {
+    font-family: 'Special Elite', cursive;
+    color: black;
+    font-size: 17;
+    position: relative;
+    right: 0.8em;
+    top: 0.2em;
+}
+
+.clearbutton:hover {
+    color:#d94a4c;
+    text-decoration: underline;
+}
+

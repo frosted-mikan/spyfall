@@ -116,3 +116,114 @@ function changeImage(){
         document.getElementById("icon").src = "http://127.0.0.1:5500/public/hidden.png";
     }
 }
+
+//Functions involved in Locations
+var input = document.getElementById("input");
+var btn = document.getElementById("btn");
+var ul = document.querySelector("ul");
+var li = document.querySelectorAll("li");
+var selection = document.getElementById("locations_select");
+
+//Check if anything was inputed
+function getLength() {
+  return input.value.length;
+};
+
+//Add one custom location to list
+function createElement() {
+    var len = document.getElementById("loclist").getElementsByTagName("li").length;
+    if (len < 53) {
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(input.value));
+        ul.appendChild(li);
+        input.value = "";
+        strikeThrough(li);    
+    }else {
+        input.placeholder = "Cannot Add More";
+        input.readonly = readonly;
+    }
+};
+
+//Import lists
+function createElemImport1() {
+    var spyfall1 = ['Airplane','Bank','Beach','Broadway Theater','Casino','Cathedral','Circus Tent','Corporate Party',
+                    'Crusader Army','Day Spa','Embassy','Hospital','Hotel','Military Base','Movie Studio',
+                    'Ocean Liner','Passenger Train','Pirate Ship','Polar Station','Police Station','Restaurant',
+                    'School','Service Station','Space Station','Submarine','Supermarket','University'];
+    for (var i = 0; i < spyfall1.length; ++i) {
+        var len = document.getElementById("loclist").getElementsByTagName("li").length;
+        if (len < 53){
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(spyfall1[i]));
+            ul.appendChild(li);
+            strikeThrough(li);        
+        }else {
+            break;
+        }
+    }
+};
+
+function createElemImport2() {
+    var spyfall2 = ['Amusement Park','Art Museum','Candy Factory','Cat Show','Cemetery','Coal Mine','Construction Site',
+                    'Gaming Convention','Gas Station','Harbor Docks','Ice Hockey Stadium','Jail','Jazz Club','Library',
+                    'Night Club','Race Track','Retirement Home','Rock Concert','Sightseeing Bus','Stadium','Subway','The U.N.',
+                    'Vineyard','Wedding','Zoo'];
+    for (var i = 0; i < spyfall2.length; ++i) {
+        var len = document.getElementById("loclist").getElementsByTagName("li").length;
+        if (len < 53){
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(spyfall2[i]));
+            ul.appendChild(li);
+            strikeThrough(li);        
+        }else {
+            break;
+        }
+    }
+};
+
+//Checking which import option is chosen
+function getChoice() {
+    var opt = selection.options[selection.selectedIndex].value;
+    if (opt == "spyfall1"){
+        createElemImport1();
+    }else if (opt == "spyfall2") {
+        createElemImport2();
+    }
+};
+
+//Processing Input
+function click() {
+  if (getLength() > 0) {
+    createElement();
+  }
+};
+
+function keyPress() {
+  if (getLength() > 0 && event.which === 13) {
+    createElement();
+  }
+};
+
+//Cross items out
+function strikeThrough(item) {
+  item.addEventListener("click", function() {
+    item.classList.toggle("done");
+  })
+};
+
+li.forEach((e) => {strikeThrough(e); });
+
+//Event listeners
+selection.addEventListener("click", getChoice);
+btn.addEventListener("click", click);
+input.addEventListener("keypress", keyPress);
+
+//Clear the list
+function clearList() {
+    while(ul.firstChild ){
+        ul.removeChild(ul.firstChild );
+    }
+}
+
+
+  

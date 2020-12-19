@@ -38,11 +38,11 @@
     }
 </style>    
 
-<body>
+<body>  
     <!--main contents start from here-->
     <body data-spy="scroll" data-target=".navbar" data-offset="100">
         <div class="view">
-            <img class = "folder" src = "public/folder_small.png" alt = folder></img>
+            <img class = "folder" src = "public/folder_long.png" alt = folder></img>
             <div class="container">
                 <div class="row">
                     <!-- Generate random room code -->
@@ -56,10 +56,33 @@
                         </script> 
                     </h1>
                     <!-- The button used to copy the text -->
-                    <button class="copybutton" onclick="copyclip(roomcode)">
-                        <img id="copy" class="copyimg1" src="public/copyicon.png" alt="copyicon" width="20" height="20"/>
-                        <img class="copyimg" src="public/copyicon_fill.png" alt="copyiconfill" width="20" height="20"/>
-                    </button>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <h3 class="clickcopy">click to copy: </h3>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="copybutton" onclick="copyclip(roomcode)">
+                                <img id="copy" class="copyimg1" src="public/copyicon.png" alt="copyicon" width="20" height="20"/>
+                                <img class="copyimg" src="public/copyicon_fill.png" alt="copyiconfill" width="20" height="20"/>
+                            </button>        
+                        </div>
+                    </div>
+
+                    <!-- Divison Line  -->
+                    <img class="smallline" src="public/singleline.png" class="singleline" alt="singleline">
+
+                    <!-- One Spy Two Spy (TODO: get the radio buttons to be red)-->
+                    <div class="row spyrow">
+                        <div class="col-sm-1"><input class="spybut" type="radio" name="choosespy" value="onespy"></div>
+                        <div class="col-sm-5">
+                            <img class="spyimg" src="public/onespy.png" alt="onespy" width="50" height="50"/>
+                        </div>
+                        <div class="col-sm-1"><input class="spybut" type="radio" name="choosespy" value="twospy"></div>
+                        <div class="col-sm-5">
+                            <img class="spyimg" src="public/twospy.png" alt="twospy" width="100" height="50"/>                   
+                        </div>
+                    </div>
+
                     </div>
 
                     <!-- Set Timer -->
@@ -72,10 +95,41 @@
                         </div>
                     </div>
                 </div>
-                <!-- Division Line -->
+                <!-- Division Line (TODO: animate a shorter one)-->
                 <img src="public/singleline.png" class="singleline" alt="singleline">
+                <!-- Locations and Suspects lists -->
                 <div class="row">
-                    <div class="col-sm-6"><h2>locations</h2></div>
+                    <div class="col-sm-6">
+                        <h2>locations</h2>
+                        <div class="row">
+                            <!-- Custom Location -->
+                            <div class="col-sm-3">
+                                <label for="location">Custom: </label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input class="box" id="input" type="text" placeholder="Enter Location">
+                                <button id="btn"></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Import from existing locations (TODO: make dropdown menu prettier)-->
+                            <div class="col-sm-3">
+                                <label for="import">Import: </label>
+                            </div>
+                            <div class="col-sm-7">
+                                <select class="selectopt" id="locations_select">
+                                    <option id="noneopt" value="none" selected="true"></option>
+                                    <option id="1opt" value="spyfall1">Spyfall 1</option>
+                                    <option id="2opt" value="spyfall2">Spyfall 2</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <h3><button class="clearbutton" onclick="clearList()">clear</a></h3>
+                            </div>
+                        </div>
+                        <!-- List of locations -->
+                        <ul id="loclist"><li>Mice Infested Apartment</li></ul>
+                    </div>
                     <div class="col-sm-6"><h2>suspects</h2></div>
                 </div>
             </div>
@@ -87,6 +141,8 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <!-- JavaScript––––––––––––––––––––––––––– -->
+    <script type="text/javascript" src="hostscript.js"></script>
 
     </body>
 </html>
