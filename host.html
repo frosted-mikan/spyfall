@@ -68,12 +68,12 @@
                         </div>
                     </div>
 
-                    <!-- Divison Line  -->
-                    <img class="smallline" src="public/singleline.png" class="singleline" alt="singleline">
+                    <!-- Divison Line (small) -->
+                    <img class="smallline" src="public/smalline.png" class="singleline" alt="singleline">
 
                     <!-- One Spy Two Spy (TODO: get the radio buttons to be red)-->
                     <div class="row spyrow">
-                        <div class="col-sm-1"><input class="spybut" type="radio" name="choosespy" value="onespy"></div>
+                        <div class="col-sm-1"><input class="spybut" type="radio" name="choosespy" value="onespy" checked="checked"></div>
                         <div class="col-sm-5">
                             <img class="spyimg" src="public/onespy.png" alt="onespy" width="50" height="50"/>
                         </div>
@@ -86,16 +86,16 @@
                     </div>
 
                     <!-- Set Timer -->
-                    <div class="col-sm-8 text-left">
-                        <span class="displaytime" id="timerr"> 05:00 </span>
-                        <!-- <div class="col-sm-10 text-left"><input class="settime" id="userInput" type="number" value = "0"/></div> -->
+                    <div class="col-sm-7 text-left">
+                        <span class="displaytime" id="userInput">01:00</span>
                         <div class="row text-center menu">
-                            <div class="col-sm-6"><h3 class="menubuttons"><a href="ingame.html" onclick="getTime()">start</a></h3></div>
+                            <div class="col-sm-6"><h3 class="menubuttons"><a href="ingame.html">start</a></h3></div>
                             <div class="col-sm-6"><h3 class="menubuttons"><a href="index.html">back</a></h3></div>
                         </div>
                     </div>
+
                 </div>
-                <!-- Division Line (TODO: animate a shorter one)-->
+                <!-- Division Line -->
                 <img src="public/singleline.png" class="singleline" alt="singleline">
                 <!-- Locations and Suspects lists -->
                 <div class="row">
@@ -133,6 +133,17 @@
                     <div class="col-sm-6"><h2>suspects</h2></div>
                 </div>
             </div>
+
+            <!-- Timer Up-Down Buttons -->
+            <div class="col-sm-1 updown">
+                <button onclick="scrollUp()" class="up">
+                    <img class="upimg" src="public/arrowicon_up.png" alt="upbut" width="20" height="20"/>
+                </button>
+                <button onclick="scrollDown()" class="down">
+                    <img class="downimg" src="public/arrowicon_down.png" alt="downbut" width="20" height="20"/>
+                </button>
+            </div>
+    
         </div>
 
         <!-- Bootstrap core JavaScript

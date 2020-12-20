@@ -1,6 +1,7 @@
 <html lang="en">
 
 <!-- Basic Page Needs––––––––––––––––––––––––––– -->
+
 <head>
     <meta http-equiv="content-type" content="text/html">
     <meta charset="utf-8">
@@ -14,7 +15,7 @@
     <!-- Bootstrap Core CSS ––––––––––––––––––––––––––– -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Custom CSS ––––––––––––––––––––––––––– -->
-    <link href="style.css" rel="stylesheet">
+    <link href="instyle.css" rel="stylesheet">
     <!-- fontawesome ––––––––––––––––––––––––––– -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- To add a google font -->
@@ -23,15 +24,16 @@
 
     <!-- Favicon––––––––––––––––––––––––––– -->
     <link rel="icon" type="image/x-icon" href="public/favicon.ico">
+
 </head>
 
-<!-- Background image (redlines and camera) -->
 <style>
     body {
-        background-image: url('public/redlines.png'), url('public/home_small.jpg');
+        background-image: url('public/in_redlines.png'), url('public/main_small.jpg');
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
+        overflow: hidden;
     }
 </style>    
 
@@ -39,13 +41,31 @@
     <!--main contents start from here-->
     <body data-spy="scroll" data-target=".navbar" data-offset="100">
         <div class="view">
+            <img class = "folder" src = "public/folder_small.png" alt = folder></img>
             <div class="container">
-                <img class="img-fluid header" src="public/target.png" alt="target"></img>
-                <h1>spyfall</h1>
-                <h2><a class = "buttons" href = "host.html">host game</a></h2>
-                <h2><a class = "buttons" href = "joingame.html">join game</a></h2>
-                <h3><a class = "buttons" href = "rules.html">how to play</a></h3>
-                <h3><a class = "buttons" href = "credits.html">credits</a></h3>
+                <h1>join game</h1>
+                <!-- Enter Room Code -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h2 class="jointext">room code: </h2>
+                    </div>
+                    <div class="col-sm-8">
+                        <input class="joininput" id="playcode" type="text" placeholder="Enter Code">
+                    </div>
+                </div>
+                <!-- Enter Player Name -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h2 class="jointext">player name: </h2>
+                    </div>
+                    <div class="col-sm-8">
+                        <input class="joininput" id="playname" type="text" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6"><h3 class="options"><a href = "ingame.html">start</a></h3></div>
+                    <div class="col-sm-6"><h3 class="options2"><a href = "index.html">back</a></h3></div>
+                </div>
             </div>
         </div>
 
@@ -55,7 +75,6 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
 
     </body>
 </html>

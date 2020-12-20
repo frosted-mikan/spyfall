@@ -31,6 +31,29 @@ div.descriptions {
     margin: 0, 1em, 0, 0;
 }
 
+.options {
+    margin-top:1em;
+    margin-left:9em;
+    width:5em;
+}
+
+.options2 {
+    margin-top:1em;
+    margin-right:9em;
+    width:5em;
+}
+
+.joininput {
+    border:none;
+}
+
+.jointext {
+    margin-left: 3em;
+    margin-bottom: 0.8em;
+    margin-right: 0;
+    width: 8em;
+}
+
 img.header {
     margin: 0;
 }
@@ -59,7 +82,7 @@ div.placeholder {
 @font-face{
     font-family:'digital-clock-font';
     src: url('public/timefont.ttf');
-}
+}  
 
 .settime {
     font-family:'digital-clock-font';
@@ -80,23 +103,23 @@ div.placeholder {
 }
 
 .identity:hover .identityimg {
-    filter: grayscale(100%);
+    filter: brightness(80%);
 }
 
 .identity:focus, .button:focus, [type="submit"]:focus {
     outline: none;
 }
 
-div.col-sm-8 {
-    position:relative;
+.up:hover .upimg {
+    filter: brightness(50%);
 }
 
-.displaytime {
-    font-family:'digital-clock-font';
-    font-size: 200;
-    position: absolute;
-    top: -60;
-    color: #d94a4c;
+.down:hover .downimg {
+    filter:brightness(50%);
+}
+
+div.col-sm-8 {
+    position:relative;
 }
 
 div.menu {
@@ -114,6 +137,14 @@ div.menu {
     /* margin-left: 1em;
     margin-right: 1em; */
     padding:0;
+}
+
+.pausebut {
+    color:#d94a4c;
+}
+
+.pausebut:hover {
+    text-decoration:underline;
 }
 
 .singleline {
@@ -205,7 +236,7 @@ div.spyrow {
 
 .smallline {
     width: 12em;
-    height: 1.1em;
+    height: 0.5em;
     position: relative;
     top: -3em;
 }
@@ -304,4 +335,113 @@ li {
     color:#d94a4c;
     text-decoration: underline;
 }
+
+/* ///////////////////////////// */
+.displaytime {
+    font-family:'digital-clock-font';
+    font-size: 200;
+    position: absolute;
+    top: -60;
+    color: #d94a4c;
+    background:none;
+    border:none;
+    width:2em;
+    /* opacity: 1; */
+}
+
+.displaytime:focus, .button:focus, [type="submit"]:focus {
+    outline: none;
+}
+
+/* For Input Time */
+input[type="number"] {
+    -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+            appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+}
+
+div.updown {
+    margin-left: 60em;
+    margin-right: 2em;
+    height: 23em;
+    width: 8em;
+    padding-top: 5em;
+}
+
+button.up{
+    position: relative;
+    top: -105em;
+}
+button.down{
+    position: relative;
+    top: -105em;
+}
+
+
+/* VOTE PAGE */
+.submit {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.5em;
+    color:#d94a4c;
+    border: 3px solid #d94a4c;
+    width: 5em;
+    height: 1.4em;
+    border-radius: 10px;
+}
+
+.submit:hover {
+    filter:brightness(50%);
+    text-decoration: none;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: black;
+    color:#d94a4c;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid black;
+    width: 80%; /* Could be more or less, depending on screen size */
+    height: 35%;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: white;
+    text-align: right;
+    font-size: 30px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #d94a4c;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .modaltext {
+      font-size: 3em;
+      padding-left:1em;
+  }
+
+  
 

@@ -8,8 +8,9 @@ function makeid(length) {
     }
     return result;
  }
- 
- function copyclip(text) {
+
+//Click to copy to clipboard
+function copyclip(text) {
     var dummy = document.createElement("textarea");
     // to avoid breaking orgain page when copying more words
     // cant copy when adding below this code
@@ -29,95 +30,48 @@ function makeid(length) {
     }, 3000);
 }
 
+//TODO: Get timein and pause to be across pages
+var timein = 1; //The input time (in min): This needs to exist across two pages 
 
-//Set Timer
-// var myVar;
-var countDownSeconds;
-
-function getTime(){
-    document.getElementById("userInput").innerHTML = countDownSeconds;
-    return countDownSeconds;
-}
-// function startTime(){ 
-//     myVar = setInterval(start, 1000);
-//     var timer = document.getElementById("userInput");
-//     document.getElementById("timerr").innerHTML = timer.value;
-//     countDownSeconds = timer.value;
-// } 
-
-// function start(){
-//     countDownSeconds--;
-//     document.getElementById("timerr").innerHTML = countDownSeconds;
-//     if (countDownSeconds == -1){
-//       stop();
-//       document.getElementById("timerr").innerHTML = "0";  
-//     }
-// }
-
-// function stop(){
-//     clearInterval(myVar);
-// }    
-
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = minutes + ":" + seconds;
-
-        if (--timer < 0) {
-            timer = duration;
-        }
-    }, 1000);
-}
-
-window.onload = function () {
-    var min = 60*5;
-    // var min = 60*countDownSeconds;
-    display = document.querySelector('#timerr');
-    startTimer(min, display);
-};
-
-//addminutes
-// function startTimer(duration, display) {
-//     var timer = duration, minutes, seconds;
-//     setInterval(function () {
-//         minutes = parseInt(timer / 60, 10);
-//         seconds = parseInt(timer % 60, 10);
-
-//         minutes = minutes < 10 ? "0" + minutes : minutes;
-//         seconds = seconds < 10 ? "0" + seconds : seconds;
-
-//         display.textContent = minutes + ":" + seconds;
-
-//         if (--timer < 0) {
-//             timer = duration;
-//         }
-//     }, 1000);
-// }
-
-// window.onload = function () {
-//     var fiveMinutes = 60 * 5,
-//         display = document.querySelector('#time');
-//     startTimer(fiveMinutes, display);
-// };
-
-//Toggle Identity Image 
-function changeImage(){
-    if (document.getElementById("icon").src == "http://127.0.0.1:5500/public/hidden.png"){
-        // window.alert(document.getElementById("icon").src);
-        document.getElementById("icon").src = "http://127.0.0.1:5500/public/spyicon.png";
-    }else {
-        // window.alert(document.getElementById("icon").src);
-        document.getElementById("icon").src = "http://127.0.0.1:5500/public/hidden.png";
+//Functions for spinbuttons for setting timer
+function scrollUp(){
+    var min = document.getElementById("userInput").innerHTML;
+    var nummin = parseInt(min.charAt(1));
+    if (min.charAt(0) != "0"){
+        var tens = parseInt(min.charAt(0));
+        nummin = (tens*10)+nummin;
     }
+    if(nummin < 60){
+        var newmin = nummin - (-1); 
+        if (newmin < 10){
+            document.getElementById("userInput").innerHTML ="0" + newmin + ":00";    
+        }else {
+            document.getElementById("userInput").innerHTML = newmin + ":00";    
+        }
+    }
+    timein = nummin; //get user input time
+}
+  
+function scrollDown(){
+    var min = document.getElementById("userInput").innerHTML;
+    var nummin = parseInt(min.charAt(1));
+    if (min.charAt(0) != "0"){
+        var tens = parseInt(min.charAt(0));
+        nummin = (tens*10)+nummin;
+    }
+    if(nummin > 1) {
+        var newmin = nummin - 1;
+        if (newmin < 10){
+            document.getElementById("userInput").innerHTML ="0" + newmin + ":00";    
+        }else {
+            document.getElementById("userInput").innerHTML = newmin + ":00";    
+        }
+    }
+    timein = nummin; //get user input time
 }
 
-//Functions involved in Locations
+
+//FUNCTIONS INVOLVED IN LOCATIONS
 var input = document.getElementById("input");
 var btn = document.getElementById("btn");
 var ul = document.querySelector("ul");
@@ -220,10 +174,7 @@ input.addEventListener("keypress", keyPress);
 
 //Clear the list
 function clearList() {
-    while(ul.firstChild ){
-        ul.removeChild(ul.firstChild );
+    while(ul.firstChild){
+        ul.removeChild(ul.firstChild);
     }
 }
-
-
-  
