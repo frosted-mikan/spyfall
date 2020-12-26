@@ -1,3 +1,16 @@
+//SUMMON THE MODAL
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close_host")[0];
+
+// When the user loads page, open the modal
+window.onload = function() {
+  modal.style.display = "block";
+}
+
+
 //Generate Random Room Code
 function makeid(length) {
     var result           = '';
@@ -31,7 +44,7 @@ function copyclip(text) {
 }
 
 //TODO: Get timein and pause to be across pages
-var timein = 1; //The input time (in min): This needs to exist across two pages 
+// var timein = 1; //The input time (in min): This needs to exist across two pages 
 
 //Functions for spinbuttons for setting timer
 function scrollUp(){
@@ -48,8 +61,9 @@ function scrollUp(){
         }else {
             document.getElementById("userInput").innerHTML = newmin + ":00";    
         }
+        return newmin; //get user input time    
     }
-    timein = nummin; //get user input time
+    return 60;
 }
   
 function scrollDown(){
@@ -66,17 +80,19 @@ function scrollDown(){
         }else {
             document.getElementById("userInput").innerHTML = newmin + ":00";    
         }
+        return newmin; //get user input time    
     }
-    timein = nummin; //get user input time
+    return 1;
 }
 
 
 //FUNCTIONS INVOLVED IN LOCATIONS
 var input = document.getElementById("input");
 var btn = document.getElementById("btn");
-var ul = document.querySelector("ul");
+var ul = document.querySelector("ol");
 var li = document.querySelectorAll("li");
 var selection = document.getElementById("locations_select");
+var numloc = 1; //number of locations 
 
 //Check if anything was inputed
 function getLength() {
@@ -90,8 +106,12 @@ function createElement() {
         var li = document.createElement("li");
         li.appendChild(document.createTextNode(input.value));
         ul.appendChild(li);
+        var location = input.value;
         input.value = "";
         strikeThrough(li);    
+        var roomcode = sessionStorage["code"];
+        addLocation(location, roomcode, numloc); //add location to database
+        ++numloc;
     }else {
         input.placeholder = "Cannot Add More";
         input.readonly = readonly;
@@ -110,7 +130,10 @@ function createElemImport1() {
             var li = document.createElement("li");
             li.appendChild(document.createTextNode(spyfall1[i]));
             ul.appendChild(li);
-            strikeThrough(li);        
+            strikeThrough(li); 
+            var roomcode = sessionStorage["code"];
+            addLocation(spyfall1[i], roomcode, numloc); //add location to database       
+            ++numloc;
         }else {
             break;
         }
@@ -128,7 +151,10 @@ function createElemImport2() {
             var li = document.createElement("li");
             li.appendChild(document.createTextNode(spyfall2[i]));
             ul.appendChild(li);
-            strikeThrough(li);        
+            strikeThrough(li);      
+            var roomcode = sessionStorage["code"];
+            addLocation(spyfall2[i], roomcode, numloc); //add location to database   
+            ++numloc;      
         }else {
             break;
         }
@@ -174,7 +200,37 @@ input.addEventListener("keypress", keyPress);
 
 //Clear the list
 function clearList() {
+    clearLocAll(); //clear from db
     while(ul.firstChild){
         ul.removeChild(ul.firstChild);
     }
 }
+
+//Clear unwanted locations from db
+//Returns array of indices of wanted locations
+function clearLocUnwanted() {
+    var roomcode = sessionStorage["code"];
+    var ul = document.getElementById("loclist");
+    var items = ul.getElementsByTagName("li");
+    var wantloc = [];
+    for (var i = 0; i < items.length; ++i) {
+        if (items[i].classList.contains("done")){
+            deleteLocation(i, roomcode);
+        }else {
+            wantloc.push(i);
+        }
+    }
+    return wantloc;
+}
+
+//Clear all locations (in room) from db 
+function clearLocAll() {
+    var roomcode = sessionStorage["code"];
+    var ul = document.getElementById("loclist");
+    var items = ul.getElementsByTagName("li");
+    for (var i = 0; i < items.length; ++i) {
+        deleteLocation(i, roomcode);
+    }
+    numloc = 0; //reset numloc
+}
+

@@ -24,7 +24,30 @@
 
     <!-- Favicon––––––––––––––––––––––––––– -->
     <link rel="icon" type="image/x-icon" href="public/favicon.ico">
-    <!-- JavaScript––––––––––––––––––––––––––– -->
+
+    <!-- Config DB JavaScript––––––––––––––––––––––––––– -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCA_NQsx10WUkG-kV7cnBmUoDHgnYhCtYY",
+        authDomain: "spyfall-ccbe5.firebaseapp.com",
+        projectId: "spyfall-ccbe5",
+        storageBucket: "spyfall-ccbe5.appspot.com",
+        messagingSenderId: "506463054951",
+        appId: "1:506463054951:web:97df05bd7ae082413b78c2"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- DB JavaScript––––––––––––––––––––––––––– -->
+    <script type="text/javascript" src="dbscript.js"></script>
+
+    <!-- Ingame JavaScript––––––––––––––––––––––––––– -->
     <script type="text/javascript" src="inscript.js"></script>
 
 </head>
@@ -42,7 +65,7 @@
     <!--main contents start from here-->
     <body data-spy="scroll" data-target=".navbar" data-offset="100">
         <div class="view">
-            <img class = "folder" src = "public/folder_small.png" alt = folder></img>
+            <img class = "folder" src = "public/folder_long.png" alt = folder></img>
             <div class="container">
                 <div class="row">
                     <!-- Identity icon -->
@@ -62,11 +85,29 @@
                 <!-- Division Line -->
                 <img src="public/singleline.png" class="singleline" alt="singleline">
                 <div class="row">
-                    <div class="col-sm-6"><h2>locations</h2></div>
-                    <div class="col-sm-6"><h2>suspects</h2></div>
+                    <div class="col-sm-6">
+                        <h2>locations</h2>
+                        <!-- List of locations will appear here-->
+                        <span id="location">LOCATION</span>
+                        <!-- <ol id="loclist"><li>Mice Infested Apartment</li></ol> -->
+                    </div>
+                    <div class="col-sm-6">
+                        <h2>suspects</h2>
+                        <!-- List of suspects will appear here -->
+                        <span id='answer'>PLAYER</span>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            //Load location and suspect lists
+            const roomcode = sessionStorage["code"];
+            const name = sessionStorage["name"];
+            window.onload = writeLocations(roomcode);
+            window.onload = listSuspects(roomcode);
+            // window.onload = getRole(name);
+        </script>
 
         <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -76,6 +117,5 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
         <!-- JavaScript––––––––––––––––––––––––––– -->
         <script type="text/javascript" src="inscript.js"></script>
-
     </body>
 </html>

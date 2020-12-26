@@ -1,4 +1,4 @@
-//SUMMON THE MODEL
+//SUMMON THE MODAL
 
 // Get the modal
 var modal = document.getElementById("myModal");
