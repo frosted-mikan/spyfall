@@ -1,18 +1,10 @@
 //THINGS TO INTIALIZE GAME IN DB, FOR HOST PAGE -------------------------------------------------
 
-//Add players to database
+//Add host to database (they are always player 0)
 const writeToDatabase = (name, roomcode) => {
-  // var index = 0;
-  // getIndex(function(returnVal){
-  //     index = returnVal;
-  // });
-  // alert(index);
-
-  // var playerid = Math.random().toString(36).substr(2, 9);
-  // sessionStorage["playerid"] = playerid;
   firebase
     .database()
-    .ref("Players/" + 1) // + Date.now() or + playerid; Maybe IP address? 
+    .ref("Players/" + (roomcode+"-"+0))  
     .set({
       name: name,
       roomcode: roomcode,
@@ -20,16 +12,11 @@ const writeToDatabase = (name, roomcode) => {
     });
 };
 
-//Version for join page (use same as host when key is randomized)
-//this needs to be the number of players overall in database, else it will reset every time
-//Keep a running count in database?
+//Add players to database 
 const writeToDatabaseJoin = (name, roomcode, index) => {
-  // var index = getIndex();
-  // var playerid = Math.random().toString(36).substr(2, 9);
-  // sessionStorage["playerid"] = playerid;
   firebase
       .database()
-      .ref("Players/" + i) // + Date.now(), + playerid
+      .ref("Players/" + (roomcode+"-"+index)) 
       .set({
       name: name,
       roomcode: roomcode,
@@ -43,13 +30,23 @@ const createGame = (roomcode) => {
   .database()
   .ref("Games/" + roomcode)
   .set({
-      time: 1,
-      spynum: 1,
-      status: false,
-      vote: false,
-      winner: "unknown"
+      time: 5, //timer countdown time
+      status: false, //status of starting game
+      vote: false, //status of if someone has voted
+      winner: "unknown", //winner of the game (spy or others)
+      isPaused: false, //pause time 
   });
 };
+
+//Create counter for numplayers in db
+const createNumPlayers = (roomcode) => {
+  firebase
+  .database()
+  .ref("Counters/" + roomcode)
+  .set({
+    numPlayers: 1 //number of players. Starts at 1 for first player who joins
+  });
+}
 
 //Add locations to database
 const addLocation = (location, roomcode, numloc) => {
@@ -63,15 +60,10 @@ const addLocation = (location, roomcode, numloc) => {
   });
 };
 
-//Host: update timein and spynum, pick spy and location, go to ingame page
-function start(roomcode, timein, spynum) {  
-    sessionStorage["time"] = timein;
-    updateSpynum(spynum, roomcode);
-    updateTime(timein, roomcode);
-    pickSpy(4, roomcode); //numplayers
+//Host: update timein + spynum + game status, pick spy and location, go to ingame page
+function start(roomcode, timein) {  
     pickLocation(numloc, roomcode); 
-    // checkStart(roomcode);
-    startGame(roomcode);  
+    startGame(roomcode, timein);  
     window.location.replace("ingame.html");
 }
 
@@ -89,7 +81,19 @@ var locref = rootRef.child('Locations');
 //creates ref for games
 var gameref = rootRef.child('Games');
 
-//Write list of suspects on pre-game screen (host and join)
+//creates ref for counters
+var counterref = rootRef.child('Counters');
+
+//Update game status, spynum and timein. This should trigger all players in room to ingame
+function startGame(roomcode, newtime){
+  var updateStatus = gameref.child(roomcode); 
+  updateStatus.update({
+    "status": true,
+    "time": newtime
+  });
+}
+
+//Write list of suspects on pre-game screens (host and join)
 function writeList(roomcode){
     // gets values from database and changes html
     ref.on('value', function(snap) { 
@@ -104,46 +108,99 @@ function writeList(roomcode){
     });        
 }
 
-//Write list of locations in-game screen, and vote screen
-function writeLocations(roomcode) {
-  locref.once('value', function(snap) { 
-      document.getElementById("location").innerHTML = "";        
-      snap.forEach(function(child){
-          if (child.val().roomcode == roomcode) { 
-              document.getElementById("location").innerHTML += "<li>" + child.val().location + "</li>";
-          }
-      });
-  });        
+//Helper for listSuspects
+function addStrike(temp) {
+  var ul = document.getElementById("answer");
+  var li = document.createElement("li");
+  li.appendChild(document.createTextNode(temp));
+  ul.appendChild(li);
+  strikeThrough(li); //inscript version
 }
 
 //List all suspects on in-game screen and vote screen 
 function listSuspects(roomcode){
   ref.once('value', function(snap) { 
-      document.getElementById("answer").innerHTML = "";  
+      document.getElementById("answer").innerHTML = "";
       snap.forEach(function(child){
           if (child.val().roomcode == roomcode) { 
-              document.getElementById("answer").innerHTML += "<li>" + child.val().name + "</li>";
+              var temp = child.val().name;
+              addStrike(temp);
           }
       });
-  });    
+  });        
 }
 
-//TODO: due to the overriding index of key names for players, this doesn't work in practical situations
-//Upon start, randomly pick a spy (update role to spy)
-function pickSpy(numPlayers, roomcode) {
-  var pick = false;
-  while (!pick){
-      var i = Math.floor(Math.random() * numPlayers);
-      var updateRole = ref.child(i);    
-      updateRole.on('value', function(snap){
-          if (snap.val().roomcode == roomcode){ //==roomcode
-              updateRole.update({
-                  "role":"spy"    
-              }); 
-              pick = true;       
+//Write list of locations in-game screen, and vote screen
+function writeLocations(roomcode) {
+  var ol = document.getElementById("location");
+    locref.once('value', function(snap) { 
+      document.getElementById("location").innerHTML = "";        
+      snap.forEach(function(child){
+          if (child.val().roomcode == roomcode) { 
+              var li = document.createElement("li");
+              li.appendChild(document.createTextNode(child.val().location));
+              ol.appendChild(li);
+              strikeThrough(li);  //using the inscript version  
           }
-      });     
+      });
+  });        
+}
+
+//Get the numPlayers from game to add new player to db 
+function addPlayer(roomcode, name) {
+  var newref = counterref.child(roomcode);
+  newref.once("value", function(snap){
+    var index = snap.val().numPlayers;
+    writeToDatabaseJoin(name, roomcode, index);
+    updateNumPlayers(index, roomcode);
+  });
+}
+
+//Update numPlayers when new player is added
+function updateNumPlayers(previndex, roomcode) {
+  var updateStatus = counterref.child(roomcode); 
+  var newindex = previndex + 1;
+  updateStatus.update({
+    "numPlayers": newindex
+  });
+}
+
+//Get numPlayers for picking spy
+function pickSpy(roomcode, spynum, timein) {
+  var newref = counterref.child(roomcode);
+  newref.once("value", function(snap){
+    var index = snap.val().numPlayers;
+    pickSpyNext(index, roomcode, spynum, timein);
+  });
+}
+
+//Upon start, randomly pick a spy (update role to spy)
+function pickSpyNext(numPlay, roomcode, spynum, timein) {
+  //Check that there is enough players 
+  if (numPlay < 3) {
+    alert("Not enough players");
+    return;
   }
+
+  var i = Math.floor(Math.random() * numPlay);
+  var updateRole = ref.child(roomcode+"-"+i);
+  updateRole.update({
+    "role":"spy"
+  });    
+
+  if (spynum == 2){
+    var j = Math.floor(Math.random() * numPlay);
+    while(j == i) {
+      var j = Math.floor(Math.random() * numPlay);
+    }
+    var updateRoleAgain = ref.child(roomcode+"-"+j);
+    updateRoleAgain.update({
+      "role":"spy"
+    });      
+  }
+
+  //Start the game after spy has been picked
+  start(roomcode, timein);
 }
 
 //Upon start, randomly pick a location (update role to here)
@@ -155,30 +212,16 @@ function pickLocation(numloc, roomcode) {
       if (wantloc.includes(i)){
         pick = true;
         var updateRole = locref.child(roomcode+"-"+i);    
-        updateRole.on('value', function(snap){
-          updateRole.update({
-              "role":"here"    
-          }); 
-        });      
+        updateRole.update({
+            "role":"here"    
+        }); 
       }
-    }
+    }       
 }
 
 //Delete a location 
 function deleteLocation(numloc, roomcode) {
   locref.child(roomcode+"-"+numloc).remove();
-}
-
-
-//Set status of game to true. This should trigger all players in room to ingame
-function startGame(roomcode){
-  //Host updates game status to true
-  var updateStatus = gameref.child(roomcode); 
-  updateStatus.on('value', function(snap){
-      updateStatus.update({
-          "status": true
-      });
-  });
 }
 
 //Listener for if the game status has been set to true
@@ -190,43 +233,52 @@ function checkStart(roomcode) {
   });
 }
 
-//Host: Update spynum
-function updateSpynum(newnum, roomcode) {
-  var updateSpy = gameref.child(roomcode);
-  updateSpy.on('value', function(snap){
-    updateSpy.update({
-      "spynum": newnum
-    });
-  });
-}
-
-//Host: Update time 
-function updateTime(newtime, roomcode) {
-  var updateTime = gameref.child(roomcode);
-  updateTime.on('value', function(snap){
-    updateTime.update({
-      "time": newtime
-    });
-  });
-}
-
 //Join: check if roomcode is valid
-function checkRoomcode(roomcode, name, i) {
+function checkRoomcode(roomcode, name) {
   gameref.child(roomcode).once('value', function(snapshot) {
     var exists = (snapshot.val() !== null);
-    continueStart(exists, roomcode, name, i);
+    continueStart(exists, roomcode, name);
   });
 }
 
-//Join: finish validating, add player to db, write suspect list, add listener for game start
-function continueStart(exists, roomcode, name, i) {
+//Join: finish validating, add player to db, write suspect list, listen for game start
+function continueStart(exists, roomcode, name) {
   if (exists) {
-    writeToDatabaseJoin(name, roomcode, i);
-    writeList(roomcode); //add player to db
+    // writeToDatabaseJoin(name, roomcode, i);
+    addPlayer(roomcode, name);
+    writeList(roomcode); //write list of players to screen
     checkStart(roomcode); //check for game status to update 
   }else {
     alert("Invalid roomcode");
   }
+}
+
+//FUNCTIONS REGARDING TIMER -----------------------------------------------------------------
+//Get the time from db
+function getTime(roomcode) {
+  gameref.child(roomcode).once('value', function(snapshot) {
+    var time = snapshot.val().time;
+    timer(time*60); //start timer countdown
+    setCurrTime(time);
+  });
+}
+
+//Pause the game: set isPaused to true
+//isPaused child in game db networks all players
+//all players keep track of their own currTime
+function pauseUpdate(roomcode) {
+  var updateStatus = gameref.child(roomcode); 
+  updateStatus.update({
+    "isPaused": true
+  });
+}
+
+//Resume the game: set isPaused to false
+function resumeUpdate(roomcode) {
+  var updateStatus = gameref.child(roomcode); 
+  updateStatus.update({
+    "isPaused": false
+  });
 }
 
 

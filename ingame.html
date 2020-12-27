@@ -76,8 +76,8 @@
                     <div class="col-sm-8 text-left">
                         <span class="displaytime" id="timerr"></span>
                         <div class="row text-center menu">
-                            <div class="col-sm-4"><h3 class="menubuttons"><button class="pausebut" id="pauseid" onclick="pause()">pause</button></h3></div>
-                            <div class="col-sm-4"><h3 class="menubuttons"><a href="host.html">end</a></h3></div>
+                            <div class="col-sm-4"><h3 class="menubuttons"><button class="pausebut" id="pauseid" onclick="pause(roomcode)">pause</button></h3></div>
+                            <div class="col-sm-4"><h3 class="menubuttons"><a href="index.html">end</a></h3></div>
                             <div class="col-sm-4"><h3 class="menubuttons"><a href="vote.html">vote</a></h3></div>                            
                         </div>
                     </div>
@@ -88,25 +88,26 @@
                     <div class="col-sm-6">
                         <h2>locations</h2>
                         <!-- List of locations will appear here-->
-                        <span id="location">LOCATION</span>
-                        <!-- <ol id="loclist"><li>Mice Infested Apartment</li></ol> -->
+                        <ol id="location"><li></li></ol>
                     </div>
                     <div class="col-sm-6">
                         <h2>suspects</h2>
                         <!-- List of suspects will appear here -->
-                        <span id='answer'>PLAYER</span>
+                        <ol id='answer'></ol>
                     </div>
                 </div>
             </div>
         </div>
 
         <script>
-            //Load location and suspect lists
+            //Load location and suspect lists, get role and time
             const roomcode = sessionStorage["code"];
             const name = sessionStorage["name"];
             window.onload = writeLocations(roomcode);
             window.onload = listSuspects(roomcode);
             // window.onload = getRole(name);
+            window.onload = getTime(roomcode);
+            window.onload = checkPause(roomcode);
         </script>
 
         <!-- Bootstrap core JavaScript

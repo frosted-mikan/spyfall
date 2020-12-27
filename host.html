@@ -78,10 +78,10 @@
 
     <script>
         //Randomly generate roomcode
-        const roomcode = Math.floor(Math.random() * 10); //random number 1-10 for now
+        const roomcode = makeid(5);
         sessionStorage["code"] = roomcode;
         //Time declaration 
-        var timein = 1;
+        var timein = 5;
     </script>
 
     <script>
@@ -95,7 +95,7 @@
             } else {
                 writeToDatabase(name, roomcode);
                 createGame(roomcode);
-                //   makeCount(1);
+                createNumPlayers(roomcode);
             }
         };
     </script>
@@ -120,13 +120,6 @@
                             //Put the roomcode here
                             document.getElementById("roomcodehere").innerHTML = roomcode;
                         </script>
-                        <!-- <script>
-                            //FOR WHEN ROOMCODE IS RANDOMLY GENERATED:
-                            // Storing HTML code block in a variable
-                            var roomcode = makeid(5);
-                            // Inserting the code block to wrapper element
-                            document.write(roomcode)
-                        </script>  -->
                     </h1>
                     <!-- The button used to copy the text -->
                     <div class="row">
@@ -146,11 +139,11 @@
 
                     <!-- One Spy Two Spy (TODO: get the radio buttons to be red)-->
                     <div class="row spyrow">
-                        <div class="col-sm-1"><input id="onespy" class="spybut" type="radio" name="choosespy" value="onespy" checked="checked"></div>
+                        <div class="col-sm-1"><input id="onespy" class="spybut" type="radio" name="choosespy" value="onespy" onclick="updateSpy(1)" checked="checked"></div>
                         <div class="col-sm-5">
                             <img class="spyimg" src="public/onespy.png" alt="onespy" width="50" height="50"/>
                         </div>
-                        <div class="col-sm-1"><input id="twospy" class="spybut" type="radio" name="choosespy" value="twospy"></div>
+                        <div class="col-sm-1"><input id="twospy" class="spybut" type="radio" name="choosespy" value="twospy" onclick="updateSpy(2)"></div>
                         <div class="col-sm-5">
                             <img class="spyimg" src="public/twospy.png" alt="twospy" width="100" height="50"/>                   
                         </div>
@@ -160,9 +153,10 @@
 
                     <!-- Set Timer -->
                     <div class="col-sm-7 text-left">
-                        <span class="displaytime" id="userInput">01:00</span>
+                        <span class="displaytime" id="userInput">05:00</span>
                         <div class="row text-center menu">
-                            <div class="col-sm-6"><h3 class="menubuttons"><button class="pausebut" onclick="start(roomcode, timein, spynum)">start</button></h3></div>
+                            <!-- Menu Buttons  -->
+                            <div class="col-sm-6"><h3 class="menubuttons"><button class="pausebut" onclick="pickSpy(roomcode, spynum, timein)">start</button></h3></div>
                             <div class="col-sm-6"><h3 class="menubuttons"><a href="index.html">back</a></h3></div>
                         </div>
                     </div>
@@ -215,10 +209,10 @@
 
             <!-- Timer Up-Down Buttons -->
             <div class="col-sm-1 updown">
-                <button onclick="timein = scrollUp()" class="up">
+                <button onclick="timein=scrollUp()" class="up">
                     <img class="upimg" src="public/arrowicon_up.png" alt="upbut" width="20" height="20"/>
                 </button>
-                <button onclick="timein = scrollDown()" class="down">
+                <button onclick="timein=scrollDown()" class="down">
                     <img class="downimg" src="public/arrowicon_down.png" alt="downbut" width="20" height="20"/>
                 </button>
             </div>
@@ -245,12 +239,6 @@
                     modal.style.display = "none";
                 }
             });
-
-            //Update spynum 
-            var one = document.getElementById("onespy");
-            var two = document.getElementById("twospy");
-            one.addEventListener("click", updateSpy(1));
-            two.addEventListener("click", updateSpy(2));
 
             //Write list of suspects
             var suslist = document.getElementById("suspectlist");

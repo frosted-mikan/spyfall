@@ -1,34 +1,41 @@
 //FUNCTIONS REGARDING TIMER
 
-var isPaused = false; //pause has to happen to all timers for every player
-// var currTime = timein;
+//Set current time (remaining time left) as global var, to timein
 var currTime = 65; //temp
+function setCurrTime(time) {
+    currTime = time;
+}
+
 //Play/pause button
-function pause(){
+function pause(roomcode){
     if(document.getElementById("pauseid").innerHTML == "pause"){
-        isPaused = true;
-        document.getElementById("pauseid").innerHTML = "resume";
+        pauseUpdate(roomcode);
     }else {
-        isPaused = false;
+        resumeUpdate(roomcode);
+    }
+}
+
+var settime; //var for the countdown 
+
+//Listener for if the game has been paused
+function checkPause(roomcode) {
+    var rootRef = firebase.database().ref();
+    var gameref = rootRef.child('Games');
+    var gameroomref = gameref.child(roomcode);
+    gameroomref.on("child_changed", function(snap){
+      if (document.getElementById("pauseid").innerHTML == "resume") { //resumed
         document.getElementById("pauseid").innerHTML = "pause";
-        countdown();
-    }
-}
-//Handle the countdown timer
-function countdown() {
-    if(currTime != 0){
         timer(currTime);
-    }else {
-        window.location.replace("vote.html")
-    }
+      }else { //paused
+        document.getElementById("pauseid").innerHTML = "resume";
+        clearInterval(settime);
+      }
+    });
 }
+  
 //Start timer countdown
 function timer(distance) { //duration is in seconds
-    var settime = setInterval(function() {
-        if (isPaused) { 
-            clearInterval(settime);
-            return;
-        }
+    settime = setInterval(function() {
         var min = parseInt(distance / 60, 10);
         var sec = parseInt(distance % 60, 10);    
         min = min < 10 ? "0" + min : min;
@@ -45,9 +52,6 @@ function timer(distance) { //duration is in seconds
     }, 1000);
 }
 
-//timer starts when the ingame page loads 
-document.getElementById("timerr").addEventListener("load", timer(65));
-
 //Toggle Identity Image 
 function changeImage(){
     if (document.getElementById("icon").src == "http://127.0.0.1:5500/public/hidden.png"){
@@ -58,3 +62,13 @@ function changeImage(){
         document.getElementById("icon").src = "http://127.0.0.1:5500/public/hidden.png";
     }
 }
+
+
+//Handling locations and suspect lists
+//Cross items out (w/o deleting from db)
+function strikeThrough(item) {
+    item.addEventListener("click", function() {
+      item.classList.toggle("done");
+    })
+};
+  

@@ -56,7 +56,6 @@
 </style>    
 
 <script>
-    var i = 2;
     const validateForm = () => {
         const name = document.querySelector("#playname").value;
         const roomcode = document.querySelector("#playcode").value;
@@ -66,8 +65,7 @@
         if (name.trim() == "" || roomcode.trim() == "") {
             alert("Form not completely filled");
         } else {
-            checkRoomcode(roomcode, name, i);
-            ++i;
+            checkRoomcode(roomcode, name);
         } 
     };
 </script>

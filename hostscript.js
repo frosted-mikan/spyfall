@@ -43,9 +43,6 @@ function copyclip(text) {
     }, 3000);
 }
 
-//TODO: Get timein and pause to be across pages
-// var timein = 1; //The input time (in min): This needs to exist across two pages 
-
 //Functions for spinbuttons for setting timer
 function scrollUp(){
     var min = document.getElementById("userInput").innerHTML;
@@ -62,10 +59,11 @@ function scrollUp(){
             document.getElementById("userInput").innerHTML = newmin + ":00";    
         }
         return newmin; //get user input time    
+    }else {
+        return 60;
     }
-    return 60;
 }
-  
+
 function scrollDown(){
     var min = document.getElementById("userInput").innerHTML;
     var nummin = parseInt(min.charAt(1));
