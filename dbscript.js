@@ -493,7 +493,7 @@ function displayResult(winner) {
     modal.style.display = "block";  
     var textinside = document.getElementById("modaltexthere");
     textinside.innerHTML = "MISSION ACCOMPLISHED!";
-  }else if (self =="none" && winner == "not"){
+  }else if (self !="spy" && winner == "not"){
     var modal = document.getElementById("myModal");
     modal.style.display = "block";  
     var textinside = document.getElementById("modaltexthere");
