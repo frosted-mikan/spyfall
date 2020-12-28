@@ -63,11 +63,11 @@
     <!-- The Modal -->
     <div id="myModal" class="modal_host">
         <!-- Modal content -->
-        <div class="modal-content">
+        <div class="modal-content-host">
         <span id="closebut" class="close_host">&times;</span>
         <div class="row">
             <div class="col-sm-6">
-                <p class="modaltext">player name: </p>
+                <p class="modaltext-host">player name: </p>
             </div>
             <div class="col-sm-6">
                 <input id="form-name" class="hostnameinput" type="text"/>
@@ -80,6 +80,7 @@
         //Randomly generate roomcode
         const roomcode = makeid(5);
         sessionStorage["code"] = roomcode;
+        sessionStorage["playerkey"] = 0;
         //Time declaration 
         var timein = 5;
     </script>
@@ -88,14 +89,13 @@
         //Getting name from modal
         const validateForm = () => {
             const name = document.querySelector("#form-name").value;
-            sessionStorage["name"] = name;
-
             if (name.trim() == "") {
                 alert("Please enter player name");
             } else {
                 writeToDatabase(name, roomcode);
                 createGame(roomcode);
                 createNumPlayers(roomcode);
+                createVote(roomcode);
             }
         };
     </script>
@@ -157,7 +157,8 @@
                         <div class="row text-center menu">
                             <!-- Menu Buttons  -->
                             <div class="col-sm-6"><h3 class="menubuttons"><button class="pausebut" onclick="pickSpy(roomcode, spynum, timein)">start</button></h3></div>
-                            <div class="col-sm-6"><h3 class="menubuttons"><a href="index.html">back</a></h3></div>
+                            <!-- <div class="col-sm-6"><h3 class="menubuttons"><a href="index.html" id="backbut">back</a></h3></div> -->
+                            <div class="col-sm-6"><h3 class="menubuttons"><button class="pausebut" onclick="hostDelete(roomcode)">back</button></h3></div>
                         </div>
                     </div>
 

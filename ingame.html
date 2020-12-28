@@ -70,7 +70,10 @@
                 <div class="row">
                     <!-- Identity icon -->
                     <div class="col-sm-4 text-left identity">
-                        <img id="icon" src="public/hidden.png" onclick="changeImage()" class="identityimg" alt="hidden" width="200" height="200"/>
+                        <button onclick="changeImage()">
+                            <image id="icon" src="public/hidden.png" class="identityimg" alt="hiddenimg" width="200" height="200"/>
+                            <h2 class="lochere" id="role"></h2>
+                        </button>
                     </div>
                     <!-- Countdown timer -->
                     <div class="col-sm-8 text-left">
@@ -78,7 +81,7 @@
                         <div class="row text-center menu">
                             <div class="col-sm-4"><h3 class="menubuttons"><button class="pausebut" id="pauseid" onclick="pause(roomcode)">pause</button></h3></div>
                             <div class="col-sm-4"><h3 class="menubuttons"><a href="index.html">end</a></h3></div>
-                            <div class="col-sm-4"><h3 class="menubuttons"><a href="vote.html">vote</a></h3></div>                            
+                            <div class="col-sm-4"><h3 class="menubuttons"><button class="pausebut" id="voteid" onclick="goVote(roomcode)">vote</button></h3></div>                            
                         </div>
                     </div>
                 </div>
@@ -100,14 +103,15 @@
         </div>
 
         <script>
-            //Load location and suspect lists, get role and time
+            //Load location and suspect lists, get role and time, listen for pause or vote
             const roomcode = sessionStorage["code"];
-            const name = sessionStorage["name"];
+            const key = sessionStorage["playerkey"];
             window.onload = writeLocations(roomcode);
             window.onload = listSuspects(roomcode);
-            // window.onload = getRole(name);
             window.onload = getTime(roomcode);
             window.onload = checkPause(roomcode);
+            window.onload = getRole(roomcode, key);
+            window.onload = checkVote(roomcode);
         </script>
 
         <!-- Bootstrap core JavaScript

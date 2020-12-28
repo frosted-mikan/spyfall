@@ -54,15 +54,22 @@ function timer(distance) { //duration is in seconds
 
 //Toggle Identity Image 
 function changeImage(){
+    var playerrole = sessionStorage["role"];
     if (document.getElementById("icon").src == "http://127.0.0.1:5500/public/hidden.png"){
         // window.alert(document.getElementById("icon").src);
-        document.getElementById("icon").src = "http://127.0.0.1:5500/public/spyicon.png";
+        if (playerrole == "spy"){
+            document.getElementById("icon").src = "http://127.0.0.1:5500/public/spyicon.png";
+        } else {
+            //Maybe make location icon red?
+            document.getElementById("icon").src = "http://127.0.0.1:5500/public/locationicon.png"; 
+            document.getElementById("role").innerHTML = playerrole;
+        }
     }else {
         // window.alert(document.getElementById("icon").src);
         document.getElementById("icon").src = "http://127.0.0.1:5500/public/hidden.png";
+        document.getElementById("role").innerHTML = ""; //display nothing
     }
 }
-
 
 //Handling locations and suspect lists
 //Cross items out (w/o deleting from db)

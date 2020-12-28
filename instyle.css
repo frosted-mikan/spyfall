@@ -410,25 +410,12 @@ button.down{
     width: 80%; /* Could be more or less, depending on screen size */
     height: 35%;
   }
-  
-  /* The Close Button */
-  .close {
-    color: white;
-    text-align: right;
-    font-size: 30px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: #d94a4c;
-    text-decoration: none;
-    cursor: pointer;
-  }
 
   .modaltext {
       font-size: 3em;
       padding-left:1em;
+      padding-top:0.5em;
+      margin-bottom:0;
   }
 
   /* Modal on Host Screen */
@@ -447,7 +434,7 @@ button.down{
   }
   
   /* Modal Content/Box */
-  .modal-content {
+  .modal-content-host {
     background-color: #efeae4;
     color:black;
     margin: 15% auto; /* 15% from the top and centered */
@@ -457,12 +444,19 @@ button.down{
     height: 35%;
   }
 
+  .modaltext-host {
+    font-size: 3em;
+    padding-left:1em;
+    margin-bottom:0;
+  }
+
   /* The Close Button */
   .close_host {
     color: black;
     text-align: right;
     font-size: 30px;
     font-weight: bold;
+    margin-left:31em;
   }
   
   .close_host:hover,
@@ -472,15 +466,57 @@ button.down{
     cursor: pointer;
   }
 
-  .modaltext {
-      font-size: 3em;
-      padding-left:1em;
-  }
-
 .hostnameinput {
     width:100%;
     position: relative;
     right: 2.5em;
     border:none;
     font-size: 3em;
+}
+
+.lochere {
+    position: absolute;
+    width: 8em;
+    margin: 0;
+    height: 8em;
+    padding-top: 3.5em;
+    padding-left: 0.5em;
+    text-align: center;
+    padding-right: 0.5em;
+    padding-bottom: 0.3em;
+    text-decoration: none;
+}
+
+.voteexit {
+    padding-left:2.5em;
+}
+
+.choicebuttons {
+    display: none;
+}
+
+.choicebuttons:checked ~ label {
+    color: #d94a4c;
+}
+
+.choicebuttons ~label:hover {
+    cursor: pointer;
+}
+
+.exitbut {
+    font-family: 'Special Elite', cursive;
+    color: #d94a4c;
+    border: 3px solid #d94a4c;
+    width: 5em;
+    height: 1.4em;
+    border-radius: 10px;
+    text-align: center;
+    margin-left: 1.5em;
+    font-size: 2em;
+    text-decoration:none;
+}
+
+.exitbut:hover {
+    filter:brightness(50%);
+    text-decoration: none;
 }

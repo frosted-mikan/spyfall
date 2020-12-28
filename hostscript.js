@@ -91,6 +91,7 @@ var ul = document.querySelector("ol");
 var li = document.querySelectorAll("li");
 var selection = document.getElementById("locations_select");
 var numloc = 1; //number of locations 
+sessionStorage["numItems"] = numloc; //store initial
 
 //Check if anything was inputed
 function getLength() {
@@ -221,7 +222,7 @@ function clearLocUnwanted() {
     return wantloc;
 }
 
-//Clear all locations (in room) from db 
+//Clear all locations (in room) from db - for host page clear button
 function clearLocAll() {
     var roomcode = sessionStorage["code"];
     var ul = document.getElementById("loclist");
@@ -231,4 +232,6 @@ function clearLocAll() {
     }
     numloc = 0; //reset numloc
 }
+
+
 
