@@ -45,7 +45,8 @@
     </script>
 
     <!-- Javascript----------------- -->
-    <script src="dbscript.js"></script>
+    <script src="votescript.js"></script>
+
 
 </head>
 
@@ -63,9 +64,8 @@
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <!-- Win status will appear here  -->
             <p id="modaltexthere"class="modaltext"></p>
-            <a href="index.html"><h3 class="exitbut">exit</h3></a>
+            <p id="smalltext" class="smallmodal"></p>
         </div>
     </div>
     
@@ -74,17 +74,16 @@
         <div class="view">
             <img class = "folder" src = "public/folder_long.png" alt = folder></img>
             <div class="container">
-                <h1 id="votetitle"></h1>
-                <h1><button id="submitbut" class="submit" onclick="submit(roomcode)">submit</button></h1>
-                <h3><a href = "index.html">exit</a></h3>
+                <h1 id="votetitle">who is the spy?</h1>
+                <h1><button id="submitbut" class="submit" onclick="submit()">submit</button></h1>
 
                 <!-- Division Line -->
                 <img src="public/singleline.png" class="singleline" alt="singleline">
 
-                <!-- List of suspects/locations to choose from  -->
+                <!-- List of suspects to choose from  -->
                 <div class="row">
                     <div class="col-sm-4">
-                        <h2 id="listitle" class="jointext"></h2>
+                        <h2 id="listitle" class="jointext">suspects: </h2>
                     </div>
                     <div class="col-sm-8">
                         <span id='answer'></span>
@@ -96,8 +95,8 @@
     <script>
         const roomcode = sessionStorage["code"];
         const role = sessionStorage["role"];
-        window.onload = setTitles(roomcode, role);
-        window.onload = checkWin(roomcode);
+        window.onload = listSuspectsVote(roomcode);
+        window.onload = checkVoteDone(roomcode);
     </script>
     
         <!-- Bootstrap core JavaScript

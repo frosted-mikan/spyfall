@@ -8,7 +8,8 @@ const writeToDatabase = (name, roomcode) => {
     .set({
       name: name,
       roomcode: roomcode,
-      role: "none"
+      role: "none",
+      tally: 0
     });
 };
 
@@ -21,7 +22,8 @@ const writeToDatabaseJoin = (name, roomcode, index) => {
       .set({
       name: name,
       roomcode: roomcode,
-      role: "none"
+      role: "none",
+      tally: 0
       });
 };
 
@@ -33,8 +35,19 @@ const createGame = (roomcode) => {
   .set({
       time: 5, //timer countdown time
       status: false, //status of starting game
-      winner: "unknown", //winner of the game (spy or others)
       isPaused: false, //pause time 
+      majority: 0, //the most votes 
+      majplayer: roomcode+"-"+0 //player key with most votes
+  });
+};
+
+//Create win status of game in db 
+const createWin = (roomcode) => {
+  firebase
+  .database()
+  .ref("Winners/" + roomcode)
+  .set({
+    winner: "unknown" //winner of the game (spy or non)
   });
 };
 
@@ -99,6 +112,9 @@ var counterref = rootRef.child('Counters');
 
 //creates ref for votes
 var voteref = rootRef.child('Votes');
+
+//creates ref for win status 
+var winref = roofRef.child('Winners');
 
 //Update game status, spynum and timein. This should trigger all players in room to ingame
 function startGame(roomcode, newtime){
@@ -332,7 +348,7 @@ function goVote(roomcode) {
   var newref = voteref.child(roomcode);
   newref.update({
     "vote": true
-  });
+  });   
 }
 
 //Listener for if vote was pressed (in ingame)
@@ -343,168 +359,280 @@ function checkVote(roomcode) {
   });
 }
 
-//Set the titles of the page accordingly
-function setTitles(roomcode, role) {
-  if (role == "spy"){
-    document.getElementById("votetitle").innerHTML = "where are you?";
-    document.getElementById("listitle").innerHTML = "locations: ";
-    writeLocationsVote(roomcode);
-  }else {
-    document.getElementById("votetitle").innerHTML = "who is the spy?";
-    document.getElementById("listitle").innerHTML = "suspects: ";
-    listSuspectsVote(roomcode);
-  }
-}
+// //FOR VOTE.HTML PAGE: ---------------------------------------------------------
 
-//Helper for listSuspectsVote and writeLocationsVote: writes out locations/suspects as input radio buttons
-function choose(name) {
-  var ul = document.getElementById("answer");
-  var li = document.createElement("li");
-  //The input radio button
-  var x = document.createElement("INPUT");
-  x.setAttribute("type", "radio");
-  x.name = "choices";
-  x.id = name;
-  x.value = name;
-  x.className = "choicebuttons";
-  //The label for the button
-  var y = document.createElement("LABEL");
-  y.innerHTML = name;
-  y.htmlFor = name;
-  //Put them on the list
-  li.appendChild(x);
-  li.appendChild(y);
-  ul.appendChild(li);
-} 
+// //For determining player with highest vote:
+// var consensus = 0; //number of equal majority votes 
+// var votenum = 0; //number of players who have voted already
 
-//For spy: List all locations on vote screen 
-function writeLocationsVote(roomcode) {
-  locref.once('value', function(snap) { 
-    snap.forEach(function(child) {
-        if (child.val().roomcode == roomcode) { 
-            var temp = child.val().location;
-            choose(temp);
-        }
-    });
-});        
-}
+// //AddVote Functions: add a tally to a player
+// function addVote(key) {
+//   alert("enteraddvote");
+//   var newref = ref.child(key);    
+//   newref.once("value", function(snap){
+//     var lasttally = snap.val().tally;
+//     addVoteHelper(key, lasttally);
+//   });
+// }
+// function addVoteHelper(key, lasttally) {
+//   var newtally = lasttally + 1;
+//   alert("newtally: " + newtally);
+//   var newref = ref.child(key);
+//   newref.update({
+//     "tally": newtally
+//   });
 
-//For non-spies: List all suspects on vote screen
-function listSuspectsVote(roomcode){
-  ref.once('value', function(snap) { 
-      snap.forEach(function(child){
-          if (child.val().roomcode == roomcode) { 
-              var temp = child.val().name;
-              choose(temp);
-          }
-      });
-  });        
-}
+//   var roomcode = sessionStorage["code"];
+//   getMajority(roomcode, newtally, key);
+// }
 
-//The submit button - get which option was selected
-function submit(roomcode) {
-  var self = sessionStorage["role"];
-  if (self == "spy"){
-    getLocationVote(roomcode);
-  }else {
-    getSpy(roomcode);
-  }
-}
+// //Get the current majority votes
+// function getMajority(roomcode, newtally, key){
+//   alert("getmaj entered");
+//   var newref = gameref.child(roomcode);
+//   newref.once("value", function(snap){
+//     var majority = snap.val().majority;
+//     checkVoteWinner(key, newtally, majority);
+//   });
+// }
 
-//Get location for spy's vote
-function getLocationVote(roomcode) {
-  locref.once('value', function(snap) { 
-      snap.forEach(function(child){
-          if (child.val().roomcode == roomcode && child.val().role == "here") { 
-            var lochere = child.val().location;
-            checkRight(lochere);
-          }
-      });
-  });        
-}
+// //For determining winner of vote for spy 
+// function checkVoteWinner(key, newtally, majority) {
+//   alert("checkwinner entered");
+//   var radios = document.getElementsByName('choices');
+//   var numplayers = radios.length;
+//   var roomcode = sessionStorage["code"];
+//   alert("numplayers: " + numplayers);
 
-//Get spy for non-spy's vote
-function getSpy(roomcode) {
-  ref.once('value', function(snap) { 
-      snap.forEach(function(child){
-          if (child.val().roomcode == roomcode && child.val().role == "spy") { 
-            var spyhere = child.val().name;
-            checkRight(spyhere);
-          }
-      });
-  });        
-}
+//   if (newtally > majority){
+//     alert("new maj");
 
-//Check if location or suspect was correct 
-function checkRight(choice) {
-  var radios = document.getElementsByName('choices');
-  var role = sessionStorage["role"];
-  for (var i = 0, length = radios.length; i < length; i++) {
-    if (radios[i].checked) {
-      if (radios[i].value == choice){
-        if (role == "spy"){
-          updateWinner("spy");
-        }else {
-          updateWinner("not");
-        }
-        break;
-      }else {
-        if (role == "spy"){
-          updateWinner("not");
-        }else {
-          updateWinner("spy");
-        }
-        break;
-      }
-    }
-  }
-}
+//     //UPDATE MAJORITY
+//     var newref = gameref.child(roomcode);
+//     newref.update({
+//       "majority": newtally,
+//       "majplayer": key
+//     });    
+//     /////////////////
 
-//update the winner in game db 
-function updateWinner(winner) {
-  var updateStatus = gameref.child(roomcode); 
-  updateStatus.update({
-    "winner": winner
-  });
-}
+//     consensus = 0; //reset, as there is new majority
 
-//listener for winner 
-function checkWin(roomcode) {
-  var gameroomref = gameref.child(roomcode);
-  gameroomref.on("child_changed", function(snap){
-    continueDisplay(roomcode);
-  });
-}
+//     if ((votenum-1) >= numplayers){ //at this point, we're just waiting for consensus
+//       alert("votenum >= numplayers");
+//       //TODO: check that every player has voted?
+//       updateVoteSpy(roomcode);
+//     }
+//   }
+//   if (newtally == majority){
+//     ++consensus; //a consensus hasn't been reached
+//   }
+//   if ((votenum-1) == numplayers && consensus == 0){ //all players have voted and consensus is reached
+//     alert("votenum = numplayers");
+//     //TODO: check that every player has voted?
+//     updateVoteSpy(roomcode);
+//   }
+// }
 
-//Get the win results
-function continueDisplay(roomcode) {
-  var newref = gameref.child(roomcode);
-  newref.once("value", function(snap){
-    var winner = snap.val().winner;
-    displayResult(winner);
-  });
-}
+// //when voting is done, update the vote status to get to next page
+// function updateVoteSpy(roomcode){
+//   alert("vote status updated");
+//   var newref = voteref.child(roomcode);
+//   newref.update({
+//     "vote": false
+//   });
+// }
 
-//display results for everyone 
-function displayResult(winner) {
-  var self = sessionStorage["role"];
-  if (self == "spy" && winner == "spy"){
-    var modal = document.getElementById("myModal");
-    modal.style.display = "block";  
-    var textinside = document.getElementById("modaltexthere");
-    textinside.innerHTML = "MISSION ACCOMPLISHED!";
-  }else if (self !="spy" && winner == "not"){
-    var modal = document.getElementById("myModal");
-    modal.style.display = "block";  
-    var textinside = document.getElementById("modaltexthere");
-    textinside.innerHTML = "MISSION ACCOMPLISHED!";
-  }else {
-    var modal = document.getElementById("myModal");
-    modal.style.display = "block";  
-    var textinside = document.getElementById("modaltexthere");
-    textinside.innerHTML = "MISSION FAILED";
-  }
-}
+// //Listener for if voting is done (for vote page)
+// function checkVoteDone(roomcode){
+//   var newref = voteref.child(roomcode);
+//   newref.on("child_changed", function(snap){
+//       getMajPlayer(roomcode);
+//   });
+// }
+
+// //Helper for listsuspectsvote: List suspects and votes they have 
+// function chooseSus(name, tally, key) {
+//   var ul = document.getElementById("answer");
+//   var li = document.createElement("li");
+//   //The input radio button
+//   var x = document.createElement("INPUT");
+//   x.setAttribute("type", "radio");
+//   x.name = "choices";
+//   x.id = name;
+//   x.value = key;
+//   x.className = "choicebuttons";
+//   //The name label for the button
+//   var y = document.createElement("LABEL");
+//   y.innerHTML = name;
+//   y.htmlFor = name;
+//   //The tally label for the button 
+//   var z = document.createElement("LABEL");
+//   z.innerHTML = tally;
+//   z.htmlFor = name;
+//   //Put them on the list
+//   li.appendChild(x);
+//   li.appendChild(y);
+//   li.appendChild(z);
+//   ul.appendChild(li);
+// } 
+
+// //List all suspects on vote screen
+// //Listens for new votes and update
+// function listSuspectsVote(roomcode){
+//   ref.on('value', function(snap) { 
+//     alert("triggered, votenum: " + votenum);
+//     votenum++; //one more player has voted
+//     document.getElementById("answer").innerHTML = ""; //clear the list
+//       snap.forEach(function(child){
+//           if (child.val().roomcode == roomcode) { 
+//               var name = child.val().name;
+//               var key = child.key;
+//               var tally = child.val().tally;
+//               chooseSus(name, tally, key);
+//           }
+//       });
+//   });        
+// }
+
+// //Submit button for vote for spy
+// function submit() {
+//   var radios = document.getElementsByName('choices');
+//   for (var i = 0, length = radios.length; i < length; i++) {
+//     if (radios[i].checked) {
+//       var playerkey = radios[i].value;
+//       addVote(playerkey);
+//     }
+//   }
+// }
+
+// // -----------------------------------------------------------------------------------
+
+// //Get the majority voted player (key)
+// function getMajPlayer(roomcode){
+//   alert("vote done, getting maj player");
+//   var newref = gameref.child(roomcode);
+//   newref.once('value', function(snap){
+//     var playkey = snap.val().majplayer;
+//     getVoteRole(playkey);
+//   });
+// }
+
+// //Get the role of the majority voted player
+// function getVoteRole(player){
+//   alert("get role of maj player");
+//   var newref = ref.child(player);
+//   newref.once('value', function(snap){
+//     var voterole = snap.val().role;
+//     finishVote(voterole);
+//   });
+// }
+
+// //Finish the vote page sequence by checking results of vote 
+// function finishVote(voterole){
+//   alert("finishing vote");
+//   var self = sessionStorage["role"];
+//   if (voterole == "none" && self == "none"){
+//     window.location.replace("win.html");
+//   }else if (voterole == "none" && self == "spy"){
+//     window.location.replace("lose.html");
+//   }else if (voterole == "spy" && self == "none"){
+//     //pop up wait page 
+//     var modal = document.getElementById("myModal");
+//     modal.style.display = "block";  
+//     var textinside = document.getElementById("modaltexthere");
+//     textinside.innerHTML = "YOU HAVE GUESSED THE SPY...";
+//     var smalltext = document.getElementById("smalltext");
+//     smalltext.innerHTML = "...but have they discovered your location?"
+//     //listen for location vote
+//     checkWin(roomcode);
+//   }else if (voterole == "spy" && self == "spy"){
+//     window.location.replace("votespy.html");
+//   }
+// }
+
+
+// //FOR SPY VOTE FOR LOCATIONS PAGE-------------------------------------------
+
+// //get location chosen 
+// function getLoc(){
+//   var radios = document.getElementsByName('choices');
+//   for (var i = 0, length = radios.length; i < length; i++) {
+//     if (radios[i].checked) {
+//       var chosen = radios[i].value;
+//       getLocationVote(chosen);
+//     }
+//   }
+// }
+
+// //Helper for writeLocationsVote: writes out locations as input radio buttons
+// function choose(name, key) {
+//   var ul = document.getElementById("answer");
+//   var li = document.createElement("li");
+//   //The input radio button
+//   var x = document.createElement("INPUT");
+//   x.setAttribute("type", "radio");
+//   x.name = "choices";
+//   x.id = name;
+//   x.value = key;
+//   x.className = "choicebuttons";
+//   //The label for the button
+//   var y = document.createElement("LABEL");
+//   y.innerHTML = name;
+//   y.htmlFor = name;
+//   //Put them on the list
+//   li.appendChild(x);
+//   li.appendChild(y);
+//   ul.appendChild(li);
+// } 
+
+// //For spy: List all locations on vote screen 
+// function writeLocationsVote(roomcode) {
+//   locref.once('value', function(snap) { 
+//     snap.forEach(function(child) {
+//         if (child.val().roomcode == roomcode) { 
+//             var temp = child.val().location;
+//             var key = child.key;
+//             choose(temp, key);
+//         }
+//     });
+// });        
+// }
+
+// //Determine if spy chose location correctly, and update winner
+// function getLocationVote(chosen) {
+//   var newref = locref.child(chosen);
+//   newref.once('value', function(snap){
+//     if (snap.val().role == "here"){
+//       updateWinner("spy");
+//       window.location.replace("win.html");
+//     }else {
+//       updateWinner("non");
+//       window.location.replace("lose.html");
+//     }
+//   });
+// }
+
+// //update the winner in game db 
+// function updateWinner(winner) {
+//   var roomcode = sessionStorage["code"];
+//   var updateStatus = winref.child(roomcode); 
+//   updateStatus.update({
+//     "winner": winner
+//   });
+// }
+
+// //listener for winner 
+// function checkWin(roomcode) {
+//   var newref = winref.child(roomcode);
+//   newref.on("child_changed", function(snap){
+//     // continueDisplay(roomcode);
+//     if (snap.val().winner == "spy"){
+//       window.location.replace("lose.html");
+//     }else {
+//       window.location.replace("win.html");
+//     }
+//   });
+// }
 
 //----------------------------------------------------------------------------------------
 //Deleting the Game (only host can do this)-----------------------------------------------

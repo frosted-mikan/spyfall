@@ -1,0 +1,101 @@
+<html lang="en">
+
+<!-- Basic Page Needs––––––––––––––––––––––––––– -->
+
+<head>
+    <meta http-equiv="content-type" content="text/html">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Spyfall">
+    <meta name="keywords" content="spyfall game">
+    <meta name="author" content="Amber Huo">
+    <title>Spyfall</title>
+
+    <!-- Bootstrap Core CSS ––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Custom CSS ––––––––––––––––––––––––––– -->
+    <link href="instyle.css" rel="stylesheet">
+    <!-- fontawesome ––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- To add a google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+
+    <!-- Favicon––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/x-icon" href="public/favicon.ico">
+
+    <!-- Config DB JavaScript––––––––––––––––––––––––––– -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCA_NQsx10WUkG-kV7cnBmUoDHgnYhCtYY",
+        authDomain: "spyfall-ccbe5.firebaseapp.com",
+        projectId: "spyfall-ccbe5",
+        storageBucket: "spyfall-ccbe5.appspot.com",
+        messagingSenderId: "506463054951",
+        appId: "1:506463054951:web:97df05bd7ae082413b78c2"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Javascript----------------- -->
+    <script src="votescript.js"></script>
+
+</head>
+
+<style>
+    body {
+        background-image: url('public/in_redlines.png'), url('public/main_small.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+</style>    
+
+<body>    
+    <!--main contents start from here-->
+    <body data-spy="scroll" data-target=".navbar" data-offset="100">
+        <div class="view">
+            <img class = "folder" src = "public/folder_long.png" alt = folder></img>
+            <div class="container">
+                <p class="exposed">you have been exposed as the spy...</p>
+                <h1 id="votetitle">where are you?</h1>
+                <h1><button id="submitbut" class="submit" onclick="getLoc()">submit</button></h1>
+
+                <!-- Division Line -->
+                <img src="public/singleline.png" class="singleline" alt="singleline">
+
+                <!-- List of locations to choose from  -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h2 id="listitle" class="jointext">locations: </h2>
+                    </div>
+                    <div class="col-sm-8">
+                        <span id='answer'></span>
+                    </div>
+                </div>  
+            </div>
+        </div>
+          
+    <script>
+        const roomcode = sessionStorage["code"];
+        const role = sessionStorage["role"];
+        window.onload = writeLocationsVote(roomcode);
+        window.onload = checkWin(roomcode);
+    </script>
+    
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+    </body>
+</html>

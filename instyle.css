@@ -418,6 +418,11 @@ button.down{
       margin-bottom:0;
   }
 
+  .smallmodal {
+    font-size: 1.5em;
+    margin-left: 2em;
+  }
+
   /* Modal on Host Screen */
   /* The Modal (background) */
 .modal_host {
@@ -519,4 +524,10 @@ button.down{
 .exitbut:hover {
     filter:brightness(50%);
     text-decoration: none;
+}
+
+.exposed {
+    font-size: 1.5em;
+    text-align: center;
+    color:#d94a4c;
 }
