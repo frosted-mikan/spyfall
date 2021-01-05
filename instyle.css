@@ -531,3 +531,14 @@ button.down{
     text-align: center;
     color:#d94a4c;
 }
+
+.tally {
+    margin-left:1em;
+}
+
+.loseicon {
+    margin-left: 3em;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+

@@ -27,8 +27,7 @@ var winref = rootRef.child('Winners');
 
 //AddVote Functions: add a tally to a player
 function addVote(key) {
-  alert("enteraddvote");
-  var newref = ref.child(key);
+    var newref = ref.child(key);
   newref.once("value", function(snap){
     var lasttally = snap.val().tally;
     addVoteHelper(key, lasttally);
@@ -37,7 +36,6 @@ function addVote(key) {
    
 function addVoteHelper(key, lasttally) {
   var newtally = lasttally + 1;
-  alert("newtally: " + newtally);
   var newref = ref.child(key);
   newref.update({
     "tally": newtally
@@ -49,7 +47,6 @@ function addVoteHelper(key, lasttally) {
 
 //Get the current majority votes
 function getMajority(roomcode, newtally, key){
-  alert("getmaj entered");
   var newref = gameref.child(roomcode);
   newref.once("value", function(snap){
     var majority = snap.val().majority;
@@ -59,14 +56,11 @@ function getMajority(roomcode, newtally, key){
 
 //For determining winner of vote for spy 
 function checkVoteWinner(key, newtally, majority) {
-  alert("checkwinner entered");
   var radios = document.getElementsByName('choices');
   var numplayers = radios.length;
   var roomcode = sessionStorage["code"];
-  alert("numplayers: " + numplayers);
 
   if (newtally > majority){
-    alert("new maj");
 
     //UPDATE MAJORITY
     var newref = gameref.child(roomcode);
@@ -79,7 +73,6 @@ function checkVoteWinner(key, newtally, majority) {
     consensus = 0; //reset, as there is new majority
 
     if ((votenum-1) >= numplayers){ //at this point, we're just waiting for consensus
-      alert("votenum >= numplayers");
       //TODO: check that every player has voted?
       updateVoteSpy(roomcode);
     }
@@ -88,7 +81,6 @@ function checkVoteWinner(key, newtally, majority) {
     ++consensus; //a consensus hasn't been reached
   }
   if ((votenum-1) == numplayers && consensus == 0){ //all players have voted and consensus is reached
-    alert("votenum = numplayers");
     //TODO: check that every player has voted?
     updateVoteSpy(roomcode);
   }
@@ -96,7 +88,6 @@ function checkVoteWinner(key, newtally, majority) {
 
 //when voting is done, update the vote status to get to next page
 function updateVoteSpy(roomcode){
-  alert("vote status updated");
   var newref = voteref.child(roomcode);
   newref.update({
     "vote": false
@@ -130,6 +121,7 @@ function chooseSus(name, tally, key) {
   var z = document.createElement("LABEL");
   z.innerHTML = tally;
   z.htmlFor = name;
+  z.className = "tally";
   //Put them on the list
   li.appendChild(x);
   li.appendChild(y);
@@ -141,8 +133,8 @@ function chooseSus(name, tally, key) {
 //Listens for new votes and update
 function listSuspectsVote(roomcode){
   ref.on('value', function(snap) { 
+    var role = sessionStorage["role"];
     votenum++; //one more player has voted
-    alert("triggered, votenum: " + votenum);
     document.getElementById("answer").innerHTML = ""; //clear the list
       snap.forEach(function(child){
           if (child.val().roomcode == roomcode) { 
@@ -170,7 +162,6 @@ function submit() {
 
 //Get the majority voted player (key)
 function getMajPlayer(roomcode){
-  alert("vote done, getting maj player");
   var newref = gameref.child(roomcode);
   newref.once('value', function(snap){
     var playkey = snap.val().majplayer;
@@ -180,7 +171,6 @@ function getMajPlayer(roomcode){
 
 //Get the role of the majority voted player
 function getVoteRole(player){
-  alert("get role of maj player");
   var newref = ref.child(player);
   newref.once('value', function(snap){
     var voterole = snap.val().role;
@@ -190,13 +180,12 @@ function getVoteRole(player){
 
 //Finish the vote page sequence by checking results of vote 
 function finishVote(voterole){
-  alert("finishing vote, voted for: "+voterole);
   var self = sessionStorage["role"];
   if (voterole == "none" && self == "spy"){
     window.location.replace("win.html");
-  }else if (voterole == "none" && self == "none"){
+  }else if (voterole == "none" && self != "spy"){
     window.location.replace("lose.html");
-  }else if (voterole == "spy" && self == "none"){
+  }else if (voterole == "spy" && self != "spy"){
     //pop up wait page 
     var modal = document.getElementById("myModal");
     modal.style.display = "block";  
@@ -219,7 +208,6 @@ function getLoc(){
   for (var i = 0, length = radios.length; i < length; i++) {
     if (radios[i].checked) {
       var chosen = radios[i].value;
-      alert("getloc entered, chose: "+ chosen);
       getLocationVote(chosen);
     }
   }
@@ -261,7 +249,6 @@ function writeLocationsVote(roomcode) {
 
 //Determine if spy chose location correctly, and update winner
 function getLocationVote(chosen) {
-    alert("getlocationvote");
   var newref = locref.child(chosen);
   newref.once('value', function(snap){
     if (snap.val().role == "here"){
@@ -274,7 +261,6 @@ function getLocationVote(chosen) {
 
 //update the winner in game db 
 function updateWinner(winner) {
-    alert("updatewinner");
   var roomcode = sessionStorage["code"];
   var updateStatus = winref.child(roomcode); 
   updateStatus.update({
@@ -286,12 +272,29 @@ function updateWinner(winner) {
 function checkWin(roomcode) {
   var newref = winref.child(roomcode);
   newref.on("child_changed", function(snap){
-    alert("checkwin");
-    // continueDisplay(roomcode);
-    if (snap.val().winner == "spy"){
-      window.location.replace("lose.html");
-    }else {
-      window.location.replace("win.html");
-    }
+    getWin(roomcode);
   });
+}
+
+//get the winner 
+function getWin(roomcode){
+    var newref = winref.child(roomcode);
+    newref.once("value", function(snap){
+        var win = snap.val().winner;
+        finishGame(win);    
+    });
+}
+
+//Go to appropriate win/lose screens at end
+function finishGame(win){
+    var role = sessionStorage["role"];
+    if (win == "spy" && role == "spy"){
+        window.location.replace("win.html");
+    }else if (win == "spy" && role != "spy"){
+        window.location.replace("lose.html");
+    }else if (win == "non" && role == "spy"){
+        window.location.replace("lose.html");
+    }else if (win == "non" && role != "spy"){
+        window.location.replace("win.html");
+    }  
 }
