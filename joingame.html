@@ -43,6 +43,8 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     </script>
+            
+    <script src="dbscript.js"></script>
 
 </head>
 
@@ -56,11 +58,19 @@
 </style>    
 
 <script>
+    var roomcode; 
+    if (sessionStorage["restart"]){
+        roomcode = sessionStorage["code"];
+        writeList(roomcode); //write list of players to screen
+        checkStart(roomcode); //check for game status to update 
+    }
+
     const validateForm = () => {
         const name = document.querySelector("#playname").value;
-        const roomcode = document.querySelector("#playcode").value;
+        roomcode = document.querySelector("#playcode").value;
         sessionStorage["code"] = roomcode;
         sessionStorage["name"] = name;
+        sessionStorage["playerkey"] = "player";
 
         if (name.trim() == "" || roomcode.trim() == "") {
             alert("Form not completely filled");
@@ -84,6 +94,12 @@
                     </div>
                     <div class="col-sm-8">
                         <input class="joininput" id="playcode" type="text" placeholder="Enter Code">
+                        <script>
+                            if (sessionStorage["restart"]){
+                                var temp = document.getElementById("playcode");
+                                temp.value = sessionStorage["code"];
+                            }
+                        </script>
                     </div>
                 </div>
                 <!-- Enter Player Name -->
@@ -93,6 +109,12 @@
                     </div>
                     <div class="col-sm-8">
                         <input class="joininput" id="playname" type="text" placeholder="Enter Name">
+                        <script>
+                            if (sessionStorage["restart"]){
+                                var temp = document.getElementById("playname");
+                                temp.value = sessionStorage["name"];
+                            }
+                        </script>
                     </div>
                 </div>
                 <!-- Join and Back buttons  -->

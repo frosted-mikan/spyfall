@@ -34,7 +34,6 @@ function copyclip(text) {
     dummy.select();
     document.execCommand("copy");
     document.body.removeChild(dummy);
-    // alert("Copied the text: " + text);
     
     var x = document.getElementById("copy");
     x.src = "http://127.0.0.1:5500/public/checkicon.png";
@@ -91,7 +90,9 @@ var ul = document.querySelector("ol");
 var li = document.querySelectorAll("li");
 var selection = document.getElementById("locations_select");
 var numloc = 1; //number of locations 
-sessionStorage["numItems"] = numloc; //store initial
+if (sessionStorage["restart"]){
+    numloc = sessionStorage["numItems"];
+}
 
 //Check if anything was inputed
 function getLength() {
@@ -111,6 +112,7 @@ function createElement() {
         var roomcode = sessionStorage["code"];
         addLocation(location, roomcode, numloc); //add location to database
         ++numloc;
+
     }else {
         input.placeholder = "Cannot Add More";
         input.readonly = readonly;
@@ -205,22 +207,77 @@ function clearList() {
     }
 }
 
+
 //Clear unwanted locations from db
 //Returns array of indices of wanted locations
 function clearLocUnwanted() {
     var roomcode = sessionStorage["code"];
     var ul = document.getElementById("loclist");
     var items = ul.getElementsByTagName("li");
+
+    //Host stores numLoc before start of game
+    sessionStorage["numItems"] = numloc;
+
     var wantloc = [];
+
+    // alert("just before locref");
+    // locref.once('value', function(snap) { 
+    //     alert("enter once");
+    //     for (var i = 0; i < numloc; ++i) {
+    //         alert("enter for loop");
+    //         var childif = snap.hasChild(roomcode+"-"+i);
+    //         alert("exists: "+childif);
+    //         if (childif){
+    //             alert("enter2");
+    //             if (items[i].classList.contains("done")){ //items[i] may not exist
+    //                 deleteLocation(i, roomcode);
+    //             }else {
+    //                 wantloc.push(i);
+    //             }        
+    //         }
+    //     }   
+    // });
+    
     for (var i = 0; i < items.length; ++i) {
         if (items[i].classList.contains("done")){
             deleteLocation(i, roomcode);
         }else {
             wantloc.push(i);
-        }
+        }        
     }
+
     return wantloc;
 }
+
+// function checkPlayerExists(i, roomcode){
+//     alert("entered2");
+//     //establishes root of db
+//     var rootRef = firebase.database().ref();
+//     //creates ref for players
+//     var locref = rootRef.child('Locations');
+//     locref.once("value", function(snap){
+//         for (var i = 0; i < numloc; ++i) {
+//             var childif = snap.hasChild(roomcode+"-"+i);
+//             if (childif){
+//                 if (items[i].classList.contains("done")){
+//                     deleteLocation(i, roomcode);
+//                 }else {
+//                     wantloc.push(i);
+//                 }        
+//             }
+//         }   
+//     });
+// }
+
+// function existHelp(childif){
+//     alert("entered3: "+childif);
+//     if(childif){
+//         exists = true;
+//     }
+//     else{
+//         exists = false;
+//     }
+// }
 
 //Clear all locations (in room) from db - for host page clear button
 function clearLocAll() {

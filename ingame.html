@@ -91,7 +91,7 @@
                     <div class="col-sm-6">
                         <h2>locations</h2>
                         <!-- List of locations will appear here-->
-                        <ol id="location"><li></li></ol>
+                        <ol id="loclist"><li></li></ol>
                     </div>
                     <div class="col-sm-6">
                         <h2>suspects</h2>
@@ -110,7 +110,7 @@
             window.onload = listSuspects(roomcode);
             window.onload = getTime(roomcode);
             window.onload = checkPause(roomcode);
-            window.onload = getRole(roomcode, key);
+            window.onload = getRole(roomcode, key); //second time getrole does not run?
             window.onload = checkVote(roomcode);
         </script>
 

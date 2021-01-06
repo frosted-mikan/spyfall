@@ -51,25 +51,42 @@ function timer(distance) { //duration is in seconds
 
     }, 1000);
 }
-
 //Toggle Identity Image 
 function changeImage(){
     var playerrole = sessionStorage["role"];
-    if (document.getElementById("icon").src == "http://127.0.0.1:5500/public/hidden.png"){
-        // window.alert(document.getElementById("icon").src);
+    alert("changeimage: "+ playerrole);
+    if (document.getElementById("icon").src == "https://raw.githubusercontent.com/frosted-mikan/spyfall/master/public/hidden.png"){
         if (playerrole == "spy"){
-            document.getElementById("icon").src = "http://127.0.0.1:5500/public/spyicon.png";
+            document.getElementById("icon").src = "https://raw.githubusercontent.com/frosted-mikan/spyfall/master/public/spyicon.png";
         } else {
             //Maybe make location icon red?
-            document.getElementById("icon").src = "http://127.0.0.1:5500/public/locationicon.png"; 
+            document.getElementById("icon").src = "https://raw.githubusercontent.com/frosted-mikan/spyfall/master/public/locationicon.png"; 
             document.getElementById("role").innerHTML = playerrole;
         }
     }else {
-        // window.alert(document.getElementById("icon").src);
-        document.getElementById("icon").src = "http://127.0.0.1:5500/public/hidden.png";
+        document.getElementById("icon").src = "https://raw.githubusercontent.com/frosted-mikan/spyfall/master/public/hidden.png";
         document.getElementById("role").innerHTML = ""; //display nothing
     }
 }
+
+//Toggle Identity Image 
+// function changeImage(){
+//     var playerrole = sessionStorage["role"];
+//     if (document.getElementById("icon").src == "http://127.0.0.1:5500/public/hidden.png"){
+//         // window.alert(document.getElementById("icon").src);
+//         if (playerrole == "spy"){
+//             document.getElementById("icon").src = "http://127.0.0.1:5500/public/spyicon.png";
+//         } else {
+//             //Maybe make location icon red?
+//             document.getElementById("icon").src = "http://127.0.0.1:5500/public/locationicon.png"; 
+//             document.getElementById("role").innerHTML = playerrole;
+//         }
+//     }else {
+//         // window.alert(document.getElementById("icon").src);
+//         document.getElementById("icon").src = "http://127.0.0.1:5500/public/hidden.png";
+//         document.getElementById("role").innerHTML = ""; //display nothing
+//     }
+// }
 
 //Handling locations and suspect lists
 //Cross items out (w/o deleting from db)

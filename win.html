@@ -45,7 +45,7 @@
     </script>
 
     <!-- Javascript----------------- -->
-    <script src="dbscript.js"></script>
+    <script src="finishscript.js"></script>
 
 </head>
 
@@ -66,11 +66,15 @@
             <div class="container">
                 <h1 id="votetitle">MISSION ACCOMPLISHED!</h1>
                 <img src="public/winicon.png" alt="winicon" class="loseicon">
-                <h1><button id="submitbut" class="submit" onclick="restart()">restart</button></h1>
+                <h1><button id="submitbut" class="submit" onclick="restart(roomcode)">restart</button></h1>
                 <h3><a href="index.html">exit</a></h3>
             </div>
         </div>
           
+    
+    <script>
+        const roomcode = sessionStorage["code"];
+    </script>
         <!-- Bootstrap core JavaScript
     ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->

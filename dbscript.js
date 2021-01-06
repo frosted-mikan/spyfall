@@ -85,9 +85,6 @@ const addLocation = (location, roomcode, numloc) => {
 
 //Host: update timein + spynum + game status, pick spy and location, go to ingame page
 function start(roomcode, timein) {  
-  //Host stores numLoc before start of game?
-  // sessionStorage["numItems"] = numLoc;
-
     pickLocation(numloc, roomcode); 
     startGame(roomcode, timein);  
     window.location.replace("ingame.html");
@@ -164,9 +161,9 @@ function listSuspects(roomcode){
 
 //Write list of locations in-game screen
 function writeLocations(roomcode) {
-  var ol = document.getElementById("location");
+  var ol = document.getElementById("loclist");
     locref.once('value', function(snap) { 
-      document.getElementById("location").innerHTML = "";        
+      document.getElementById("loclist").innerHTML = "";        
       snap.forEach(function(child){
           if (child.val().roomcode == roomcode) { 
               var li = document.createElement("li");
@@ -209,6 +206,8 @@ function pickSpy(roomcode, spynum, timein) {
 //Upon start, randomly pick a spy (update role to spy)
 function pickSpyNext(numPlay, roomcode, spynum, timein) {
   //Check that there is enough players 
+  sessionStorage["numplayers"] = numPlay;
+
   if (numPlay < 3) {
     alert("Not enough players");
     return;
@@ -238,17 +237,19 @@ function pickSpyNext(numPlay, roomcode, spynum, timein) {
 //Upon start, randomly pick a location (update role to here)
 function pickLocation(numloc, roomcode) {
     var wantloc = clearLocUnwanted(); //clear the unwanted locations from db, get wanted locations
+
     var pick = false;
     while(!pick){
       var i = Math.floor(Math.random() * numloc);
       if (wantloc.includes(i)){
         pick = true;
         var updateRole = locref.child(roomcode+"-"+i);    
+        sessionStorage["lochere"] = roomcode+"-"+i;
         updateRole.update({
             "role":"here"    
         }); 
       }
-    }       
+    } 
 }
 
 //Listener for if the game status has been set to true
@@ -323,6 +324,7 @@ function getRole(roomcode, playerkey) {
 function getRoleHelper(roomcode, role) {
   if (role == "spy"){
     sessionStorage["role"] = "spy";
+    alert("get role: "+ sessionStorage["role"]);
   }else {
     getLocation(roomcode);
   }
@@ -334,6 +336,7 @@ function getLocation(roomcode) {
       snap.forEach(function(child){
           if (child.val().roomcode == roomcode && child.val().role == "here") { 
               sessionStorage["role"] = child.val().location;
+              alert("get role: "+ sessionStorage["role"]);
           }
       });
   });        
@@ -381,7 +384,6 @@ function deleteLocation(numloc, roomcode) {
 
 //Clear all locations in room
 function clearLocationsAll(numitems, roomcode) {
-  // alert("locationdelete: "+numitems);
   for (var i = 0; i < numitems; ++i) {
       deleteLocation(i, roomcode);
   }
