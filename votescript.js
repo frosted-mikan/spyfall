@@ -71,6 +71,7 @@ function checkVoteWinner(key, newtally, majority) {
     /////////////////
 
     consensus = 0; //reset, as there is new majority
+    // alert("trigger: "+votenum + numplayers);
 
     if ((votenum-1) >= numplayers){ //at this point, we're just waiting for consensus
       //TODO: check that every player has voted?
@@ -133,8 +134,10 @@ function chooseSus(name, tally, key) {
 //Listens for new votes and update
 function listSuspectsVote(roomcode){
   ref.on('value', function(snap) { 
-    var role = sessionStorage["role"];
-    votenum++; //one more player has voted
+    // var role = sessionStorage["role"];
+    // alert("votenum: "+votenum);
+
+    votenum++; //one more vote has been cast
     document.getElementById("answer").innerHTML = ""; //clear the list
       snap.forEach(function(child){
           if (child.val().roomcode == roomcode) { 

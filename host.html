@@ -77,8 +77,18 @@
     </div>
 
     <script>
-        //Randomly generate roomcode
-        const roomcode = makeid(5);
+        //Generate roomcode: 
+        var roomcode;
+        if (sessionStorage["restart"]){
+            // alert("restart");
+            //1) restarting game, use prior roomcode
+            roomcode = sessionStorage["code"];
+        }else {
+            // alert("normal");
+            // 2) first time game, randomly generate roomcode
+            roomcode = makeid(5);
+        }
+
         sessionStorage["code"] = roomcode;
         sessionStorage["playerkey"] = 0;
         //Time declaration 
@@ -94,9 +104,9 @@
             } else {
                 writeToDatabase(name, roomcode);
                 createGame(roomcode);
+                createWin(roomcode);
                 createNumPlayers(roomcode);
                 createVote(roomcode);
-                createWin(roomcode);
             }
         };
     </script>
@@ -158,7 +168,6 @@
                         <div class="row text-center menu">
                             <!-- Menu Buttons  -->
                             <div class="col-sm-6"><h3 class="menubuttons"><button class="pausebut" onclick="pickSpy(roomcode, spynum, timein)">start</button></h3></div>
-                            <!-- <div class="col-sm-6"><h3 class="menubuttons"><a href="index.html" id="backbut">back</a></h3></div> -->
                             <div class="col-sm-6"><h3 class="menubuttons"><button class="pausebut" onclick="hostDelete(roomcode)">back</button></h3></div>
                         </div>
                     </div>
@@ -198,8 +207,15 @@
                             </div>
                         </div>
                         <!-- List of locations will appear here-->
-                        <ol id="loclist"><li>Mice Infested Apartment</li></ol>
-                        <script>addLocation("Mice Infested Apartment", roomcode, 0);</script>
+                        <ol id="loclist"><li id="locli"></li></ol>
+                        <!-- If not a restart, add apartment as first location -->
+                        <script>
+                            if (!sessionStorage["restart"]){
+                                var firstloc = document.getElementById("locli");
+                                firstloc.innerHTML = "Mice Infested Apartment";
+                                addLocation("Mice Infested Apartment", roomcode, 0);
+                            }
+                        </script>
                     </div>
                     <div id="suspectlist" class="col-sm-6">
                         <h2>suspects</h2>
@@ -245,6 +261,10 @@
             //Write list of suspects
             var suslist = document.getElementById("suspectlist");
             suslist.addEventListener("load", writeList(roomcode));
+            //Write list of locations, if restarting
+            if (sessionStorage["restart"]){
+                window.onload = writeLocations(roomcode);
+            }
 
         </script>
 
